@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block 'title' %}{% endblock 'title' %}
+
+{% block 'style' %}
+
+{% endblock 'style' %}
+
+{% block 'content' %}
+
+
+<section>
+    <div class="container py-5">
+  
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4">
+            <div class="card-body text-center">
+              <img src="{% static 'img/profile.jpg' %}" alt="avatar"
+                class="rounded-circle img-fluid" style="width: 150px; height: 150px;">
+              <h5 class="my-3">{{ customuser.username }}</h5>
+              <p class="text-muted mb-1">Welcome to a platform where words become art. Share your thoughts, inspire with quotes, and let your voice resonate. Join us in the world of ideas and expression</p>
+              <div class="d-flex justify-content-center mb-2 m-4">
+                <button type="button" class="btn btn-primary">Edit</button>
+                <a href="{% url 'FknAp:signout' %}" type="button" class="btn btn-outline-primary ms-1">Signout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">
+                    Username</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ customuser.username }}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Mobile</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{ customuser.mobile_number }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endblock 'content' %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block 'title' %}{% endblock 'title' %}
+
+{% block 'style' %}
+
+    <link rel="stylesheet" href="{% static 'css/index-styles.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+{% endblock 'style' %}
+
+{% block 'content' %}
+
+    {% include "header.html" %}
+
+
+    
+    <div class="w-full sm:max-w-lg sm:mx-auto px-4">
+        <!-- Blog post card -->
+        {% for item in posts %}
+        <article class="overflow-hidden rounded shadow my-4">
+            <div class="sm:flex sm:flex-wrap">
+                <div class="sm:w-100 p-4">
+                    <!-- Post category -->
+                    <span class="uppercase tracking-wide inline-block px-2 rounded-full text-xs bg-gray-300 text-gray-600"><i class="bi bi-quote"></i></span>
+                    <!-- Post title -->
+                    <!-- Post excerpt -->
+                    <p class="text-gray-700 mt-2">{{ item.content_text }}</p>
+                    <!-- Post user info -->
+                    <div class="flex mt-4">
+                        <img class="h-10 w-10 object-cover rounded"
+                            src="{% static 'img/placeholder.png' %}">
+                        <div class="pl-3 text-sm text-gray-600 ">
+                            <p class="truncate">{{item.creater}} <br>
+                            <small class="text-body-secondary fw-lighter">
+                                Last updated {{ item.date_created|timesince }} ago
+                              </small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    
+    
+
+        <!-- Add Post Button -->
+        <button class="add-post-button" {% if user.is_authenticated %} data-toggle="modal" {% endif %} data-target="#postModal">
+            <a {% if not user.is_authenticated %} href="" {% endif %} class="text-decoration-none text-light">Add Post</a></button>
+    
+        <!-- Post Window -->
+        <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #000157; color: #fff;">
+                        <h5 class="modal-title" id="postModalLabel">Write a Thought</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" style="color: #ffffff; font-size: 16px; cursor: pointer; "><i class="bi bi-x-circle"></i></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Post Form -->
+                        <form method="post" action="{% url 'FknAp:create_post' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea class="form-control" id="postContent" name ="content_text" rows="3"></textarea>
+                            </div>
+                            <div class="modal-footer" style="background-color: #fafafa;">
+                                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                                <button type="submit" class="btn btn-primary" style="background-color: #000157;">Post</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    
+{% endblock 'content' %}
+
