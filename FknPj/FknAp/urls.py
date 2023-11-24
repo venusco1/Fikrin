@@ -10,5 +10,6 @@ urlpatterns = [
     path('terms/', views.terms_and_conditions, name='terms'),
     path('signout/', views.signout, name='signout'),
     path('profile/', views.profile, name='profile'),
-    path("n/createpost", views.create_post, name="create_post"),
+    path('profile_cropping/<int:user_id>/', views.profile_cropping, name="profile_cropping"),
+    path("createpost", views.create_post, name="create_post"),
 ]

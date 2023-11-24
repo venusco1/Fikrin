@@ -1,29 +1,22 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway:400,700");
 
-* {
+
+
+body {
+	background: linear-gradient(90deg, #3d61e3, #03187d);
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 	font-family: Raleway, sans-serif;
 }
 
-body {
-	background: linear-gradient(90deg, #c7c5f4, #776bcc);
-}
-
-.container {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-height: 100vh;
-}
-
 .screen {
-	background: linear-gradient(90deg, #5d54a4, #7c78b8);
+	background: linear-gradient(90deg, #082199, #4a68fb);
 	position: relative;
 	height: 600px;
 	width: 360px;
 	box-shadow: 0px 0px 24px #5c5696;
+
 }
 
 .screen__content {
@@ -60,7 +53,7 @@ body {
 .screen__background__shape2 {
 	height: 220px;
 	width: 220px;
-	background: #6c63ac;
+	background: #0f47af;
 	top: -172px;
 	right: 0;
 	border-radius: 32px;
@@ -69,7 +62,7 @@ body {
 .screen__background__shape3 {
 	height: 540px;
 	width: 190px;
-	background: linear-gradient(270deg, #5d54a4, #6a679e);
+	background: linear-gradient(270deg, #122167, #0f47af);
 	top: -24px;
 	right: 0;
 	border-radius: 32px;
@@ -78,7 +71,7 @@ body {
 .screen__background__shape4 {
 	height: 400px;
 	width: 200px;
-	background: #7e7bb9;
+	background: #1338a5;
 	top: 420px;
 	right: 50px;
 	border-radius: 60px;
@@ -98,7 +91,7 @@ body {
 .login__icon {
 	position: absolute;
 	top: 30px;
-	color: #7875b5;
+	color: #0926b2;
 }
 
 .login__input {
@@ -131,7 +124,7 @@ body {
 	display: flex;
 	align-items: center;
 	width: 100%;
-	color: #4c489d;
+	color: #2e4ad2;
 	box-shadow: 0px 2px 2px #5c5696;
 	cursor: pointer;
 	transition: 0.2s;
@@ -147,7 +140,7 @@ body {
 .button__icon {
 	font-size: 24px;
 	margin-left: auto;
-	color: #7875b5;
+	color: #4260f0;
 }
 
 .social-login {

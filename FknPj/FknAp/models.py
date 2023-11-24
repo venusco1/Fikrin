@@ -9,10 +9,11 @@ class CustomUser(AbstractUser):
     bio = models.TextField(max_length=160, blank=True, null=True)
     cover = models.ImageField(upload_to='covers/', blank=True)
     mobile_number = models.CharField(max_length=15, unique=True)
-    mobile_visible = models.BooleanField(default=True)
+    mobile_visible = models.BooleanField(default=True) 
 
+    
     def __str__(self):
-        return self.username
+        return str(self.pk)
 
 
 

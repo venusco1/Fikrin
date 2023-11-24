@@ -6,54 +6,57 @@
 
 {% block 'style' %}
 
+<link rel="stylesheet" href="{% static 'css/profile-styles.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"/>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"/>
+
 {% endblock 'style' %}
+
 
 {% block 'content' %}
 
+<section>
+  <div class="container-fluid sticky-top" style="padding: 0;">
+    <header class="navbar flex-md-nowrap p-0 shadow mb-0 pl-2" data-bs-theme="light" style="background-color: #000157;">  <!-- #000157 -->
+        <a class="navbar-brand fs-5 text-white pb-0" href="{% url 'FknAp:home' %}">
+          <i class="bi bi-house-fill px-2" style="display: block; width: 105px; height: 40px"></i>
+        </a>
+    </header>
+</section>
 
 <section>
-    <div class="container py-5">
-  
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="card mb-4">
-            <div class="card-body text-center">
-              <img src="{% static 'img/profile.jpg' %}" alt="avatar"
-                class="rounded-circle img-fluid" style="width: 150px; height: 150px;">
-              <h5 class="my-3">{{ customuser.username }}</h5>
-              <p class="text-muted mb-1">Welcome to a platform where words become art. Share your thoughts, inspire with quotes, and let your voice resonate. Join us in the world of ideas and expression</p>
-              <div class="d-flex justify-content-center mb-2 m-4">
-                <button type="button" class="btn btn-primary">Edit</button>
-                <a href="{% url 'FknAp:signout' %}" type="button" class="btn btn-outline-primary ms-1">Signout</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-8">
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">
-                    Username</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">{{ customuser.username }}</p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Mobile</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">{{ customuser.mobile_number }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+
+  <div class="profile">
+    <a href="{% url 'FknAp:profile_cropping' user_id=user.id %}">
+      
+      <div class="img">
+        {% if customuser.profile_pic %}<img src="{{ customuser.profile_pic.url }}"/>
+        {% else %}<img src="{% static 'img/profile_avatar.png' %}"/>{% endif %}
+    </div>
+    </a>
+    
+    <a class="view-more" href="">
+      <div class="popup"></div>
+    </a>
+    <div class="mid-section pt-0">
+      <div class="name">{{ customuser.username }}</div>
+      <div class="description">Embracing thoughts, sharing quotes. Joining hearts through words on this social journey</div>
+      <div class="line"></div>
+      <div class="stats">
+        <div class="stat mt-3">
+          <a href="{% url 'FknAp:signout' %}">
+            <button class="btn btn-primary" style="background-color: #020481; border: 0;">Sign Out</button></a>
         </div>
       </div>
     </div>
-  </section>
+
+</section>
+
+
+
+
   {% endblock 'content' %}
+
+
+
+

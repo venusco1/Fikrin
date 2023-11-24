@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, redirect
 from . models import *
 from django.core.validators import RegexValidator
@@ -6,7 +7,7 @@ from django.contrib import messages ,auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-# Create your views here.
+# Create your views here. CustomUser    profile_pic
 
 
 def home(request):
@@ -76,6 +77,31 @@ def profile(request):
     customuser = CustomUser.objects.get(username=request.user.username)
     context = {'customuser': customuser}
     return render(request, "profile.html", context)
+
+# ------------------------------------------
+
+
+# ------------------------------------------
+
+from django.http import JsonResponse
+from .forms import ImageForm
+
+def profile_cropping(request, user_id):
+    form = ImageForm(request.POST or None, request.FILES or None)
+    customuser = CustomUser.objects.get(username=request.user.username)
+    
+    if form.is_valid() and 'profile_pic' in request.FILES:
+        # Remove the old profile image if it exists
+        if customuser.profile_pic:
+            if os.path.isfile(customuser.profile_pic.path):
+                os.remove(customuser.profile_pic.path)
+
+        # Save the new profile picture
+        form.save_profile_pic(user_id)
+        return redirect('FknAp:profile')
+
+    context = {'form': form, 'customuser': customuser}
+    return render(request, 'upt_image.html', context)
 
 
 @login_required
