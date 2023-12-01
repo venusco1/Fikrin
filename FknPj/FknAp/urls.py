@@ -12,4 +12,6 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('profile_cropping/<int:user_id>/', views.profile_cropping, name="profile_cropping"),
     path("createpost", views.create_post, name="create_post"),
+    path("n/post/<int:post_id>/edit", views.edit_post, name="edit_post"),
+    path("n/post/<int:post_id>/delete", views.delete_post, name="delete_post"),
 ]
