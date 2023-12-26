@@ -47,7 +47,7 @@
                         <a class="nav-link"> </a><i class="bi bi-arrow-return-left"></i></a>
                     </li>
                     <li class="col nav-item">
-                        <a class="nav-link"><i class="fa-regular fa-comments"></i></a>
+                        <a {% if user.is_authenticated %} href="{% url 'FknAp:comments' item.id %}" {% endif %} class="nav-link"><i class="fa-regular fa-comments"></i></a>
                     </li>
                     <li class="col nav-item">
                         <a class="nav-link" ><i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#edit_quotes{{ item.id }}" data-bs-placement="right"></i> </a>
@@ -58,7 +58,7 @@
                           </a>
                     </li>
                     <li class="col nav-item">
-                        {% if user.is_authenticated %}{% endif %}
+                        
                         <a class="nav-link" {% if user.is_authenticated %} ondblclick="copyContent('{{ item.content_text|escapejs }}');" {% endif %}><i class="bi bi-files scrollLink"></i></a>
                     </li>
                 </ul>
@@ -67,7 +67,7 @@
 
 
 <!-- popup for editing -->
-{% if request.user.is_authenticated and request.user.username == item.creater %} 
+{% if request.user.is_authenticated and customuser.username == item.creater.username %}
 <div class="modal fade" id="edit_quotes{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content border-1" style="border-color: #000157;">
@@ -87,7 +87,7 @@
 </div>
 {% endif %}
 <!-- alert popup for delete confirm message  -->
-{% if request.user.is_authenticated and request.user.username == item.creater %} 
+{% if request.user.is_authenticated and customuser.username == item.creater.username %}
 <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-light border border-primary">
@@ -141,26 +141,9 @@
 {% endif %}
 
 
-
-
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/index.js' %}"></script>
 
     
-<script>
-    // JavaScript to show toast on click for each post without scrolling to top
-    var scrollLinks = document.querySelectorAll('.scrollLink');
-
-    scrollLinks.forEach(function(link) {
-        link.addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent the default behavior of the anchor link
-            var infoToast = new bootstrap.Toast(document.getElementById('infoToast'));
-            infoToast.show();
-        });
-    });
-</script>
-
 {% endblock 'content' %}
 

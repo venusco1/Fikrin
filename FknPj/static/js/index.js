@@ -70,3 +70,14 @@ posts.forEach(post => {
     });
   });
 
+
+    // JavaScript to show toast on click for each post without scrolling to top
+    var scrollLinks = document.querySelectorAll('.scrollLink');
+
+    scrollLinks.forEach(function(link) {
+        link.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent the default behavior of the anchor link
+            var infoToast = new bootstrap.Toast(document.getElementById('infoToast'));
+            infoToast.show();
+        });
+    });

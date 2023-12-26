@@ -10,13 +10,22 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .forms import ImageForm
-
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here. CustomUser    profile_pic
+
 
 
 def home(request):
     posts = Post.objects.all().order_by('-date_created')
-    return render(request, 'index.html', {'posts': posts})
+    if request.user.is_authenticated:
+        try:
+            customuser = CustomUser.objects.get(username=request.user.username)
+            context = {'customuser': customuser, 'posts': posts}
+            return render(request, 'index.html', context)
+        except ObjectDoesNotExist:
+            pass
+
+    return render(request, 'index.html', {'posts': posts,'comments':comments})
 
 
 
@@ -128,35 +137,99 @@ def edit_post(request, post_id):
     if request.method == 'POST':
         text = request.POST.get('edit_text')
         post = get_object_or_404(Post, pk=post_id)
-        post.content_text = text         
+        post.content_text = text
         new_text = post.content_text
         post.edit_post(new_text=new_text)
 
         return redirect('FknAp:home')
-    
+
     else:
         return HttpResponse("Method must be 'POST'")
-    
+
 
 
 def delete_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    
-    # Check if the user has permission to delete the post, for example:
-    if request.user == post.creater:
-        post.delete()
+    post.delete()
+    return redirect('FknAp:home')
 
-        # Get the scroll position from the query parameter if available
-        scroll_position = request.GET.get('scroll_position', '0')
-        print(scroll_position)
-        # Redirect back to the same page with the scroll position as a query parameter
-        return redirect('FknAp:home')
 
+
+
+def comments(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment_text')
+        parent_comment_id = request.POST.get('parent_comment_id')
+        parent_comment = None
+
+        if parent_comment_id:
+            parent_comment = Comment.objects.get(id=parent_comment_id)
+
+        new_comment = Comment.objects.create(
+            post=post,
+            commenter=request.user,
+            comment_content=comment_text,
+            parent_comment=parent_comment,
+        )
+
+        return redirect('FknAp:comments', post_id)
     else:
-        # Handle cases where the user doesn't have permission to delete the post
-        # Redirect or render an error message as appropriate
-        return redirect('FknAp:home')
+        comments = Comment.objects.filter(post=post, parent_comment=None).order_by('-comment_time')
+        customuser = CustomUser.objects.get(username=request.user.username)
+        context = {
+            'comments': comments,
+            'post': post,
+            'customuser': customuser
+        }
+
+        return render(request, 'comments.html', context)
 
 
+def add_reply(request, post_id, comment_id):
+    post = get_object_or_404(Post, id=post_id)
+    parent_comment = get_object_or_404(Comment, pk=comment_id)
+    commenter = request.user  # Assuming you're using Django's authentication
 
+    if request.method == 'POST':
+        body = request.POST.get('body')  # Retrieve the reply content from the request
+
+        new_reply = Comment.objects.create(
+            post=parent_comment.post,
+            commenter=commenter,
+            comment_content=body,
+            parent_comment=parent_comment
+        )
+
+        # return JsonResponse({'message': 'Reply added successfully!', 'reply_id': new_reply.id})
+        comments = Comment.objects.filter(post=post, parent_comment=None).order_by('-comment_time')
+        customuser = CustomUser.objects.get(username=request.user.username)
+        context = {
+            'comments': comments,
+            'post': post,
+            'customuser': customuser
+        }
+
+        return render(request, 'comments.html', context)
+
+    return JsonResponse({'error': 'Invalid request'})
+
+
+def delete_comment(request, post_id, comment_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        comment = get_object_or_404(Comment, pk=comment_id)
+        comment.delete()
+        comments = Comment.objects.filter(post=post, parent_comment=None).order_by('-comment_time')
+
+        customuser = CustomUser.objects.get(username=request.user.username)
+        context = {
+            'comments': comments,
+            'post': post,
+            'customuser': customuser
+        }
+
+        return render(request, 'comments.html', context)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
 
