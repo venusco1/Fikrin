@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('FknAp.urls')),
-
+    path('', include('pwa.urls')),
 ]
 
 if settings.DEBUG:
@@ -16,3 +16,6 @@ if settings.DEBUG:
                           document_root = settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL,
                           document_root = settings.MEDIA_ROOT)
+    
+
+

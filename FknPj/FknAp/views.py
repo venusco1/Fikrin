@@ -13,7 +13,35 @@ from .forms import ImageForm
 from django.core.exceptions import ObjectDoesNotExist
 # Create your views here. CustomUser    profile_pic
 
+# ---------------------------------------------------------------------------------------------
+import requests
 
+def send_notification(registration_ids, message_title, message_desc, post_id):
+    fcm_api = "AAAAnvinOgI:APA91bGqvTyi96rSym5-ntZqPF3cWb9IVLsYu_Vtr9YWRZUeUutCYZIUO2Y6qzu0owSUHxEQdvaTostXYYfAQpP0B5Kxxw_IHXsrwcE9LyC9_1r-d_7vB6mGjWeY-oSt7iXzCLACmc4I"
+    url = "https://fcm.googleapis.com/fcm/send"
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": 'key=' + fcm_api
+    }
+
+    payload = {
+        "registration_ids": registration_ids,
+        "priority": "high",
+        "notification": {
+            "body": message_desc,
+            "title": message_title + ": ",
+        },
+        "data": {
+            "post_id": post_id,
+        }
+    }
+
+    result = requests.post(url, data=json.dumps(payload), headers=headers)
+    print(result.json())
+
+
+# --------------------------------------------------------------------------------------------------------
 
 def home(request):
     posts = Post.objects.all().order_by('-date_created')
@@ -125,6 +153,29 @@ def create_post(request):
         content_text = request.POST.get('content_text')
 
         post = Post.objects.create(creater=request.user, content_text=content_text)
+
+        # --------------------------------------
+        # Get the ID of the newly created post
+        post_id = post.id
+
+        try:
+            devices = FCMDevice.objects.filter(active=True)
+            registration_ids = [device.registration_id for device in devices]
+
+            if registration_ids:
+                message_title = request.user
+                message_desc = content_text
+                send_notification(registration_ids, message_title, message_desc, post_id)
+                print('Notification sent to {} devices.'.format(len(registration_ids)))
+            else:
+                print('No active devices found for sending notifications.')
+
+        except ObjectDoesNotExist:
+            print('An error occurred: FCMDevice model not found or misconfigured.')
+        except Exception as e:
+            print('An error occurred:', str(e))
+
+        # --------------------------------------
         return redirect('FknAp:home')
 
     posts = Post.objects.all()
@@ -233,3 +284,35 @@ def delete_comment(request, post_id, comment_id):
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+
+# -----------------------------------------------------------------------------------
+    
+from django.views.decorators.http import require_http_methods
+import json
+from fcm_django.models import FCMDevice
+from django.http import HttpResponse, HttpResponseBadRequest
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def save_token(request):
+
+    body_dict = json.loads(request.body.decode('utf-8'))
+    token = body_dict['token']
+    existe = FCMDevice.objects.filter(registration_id=token, active=True)
+
+    if len(existe) > 0:
+        return HttpResponseBadRequest(json.dumps ({ 'message': 'the token already exists'}))
+    
+    divice = FCMDevice()
+    divice.registration_id = token
+    divice.active= True
+
+    #solo si el usuario esta autenticado procederemos a enlazarlo
+    if request.user.is_authenticated: divice.user = request.user
+
+    try:
+        divice.save()
+        return HttpResponse(json.dumps({ 'message': 'token guardado'}))
+    except:
+        return HttpResponseBadRequest(json.dumps({'message': 'no se ha podido guardar'}))
+    
