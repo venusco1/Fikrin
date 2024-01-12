@@ -43,12 +43,16 @@
         <nav id="articleOptions" class="navbar navbar_2 navbar-light bg-light mt-1" style="display: none;">
             <div class="icon-container">
                 <ul class="row mb-2">
-                    <li class="col nav-item">
+                     <li class="col nav-item">
                         <a class="nav-link"> </a><i class="bi bi-arrow-return-left"></i></a>
                     </li>
                     <li class="col nav-item">
+                        <a class="nav-link"> </a><i class="bi bi-heart"></i></a>
+                    </li> 
+                    <li class="col nav-item">
                         <a {% if user.is_authenticated %} href="{% url 'FknAp:comments' item.id %}" {% endif %} class="nav-link"><i class="fa-regular fa-comments"></i></a>
                     </li>
+                    {% if request.user.is_authenticated and customuser.username == item.creater.username %}
                     <li class="col nav-item">
                         <a class="nav-link" ><i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#edit_quotes{{ item.id }}" data-bs-placement="right"></i> </a>
                     </li>
@@ -57,6 +61,7 @@
                             <i class="bi bi-trash"></i>
                           </a>
                     </li>
+                    {% endif %}
                     <li class="col nav-item">
                         
                         <a class="nav-link" {% if user.is_authenticated %} ondblclick="copyContent('{{ item.content_text|escapejs }}');" {% endif %}><i class="bi bi-files scrollLink"></i></a>
@@ -108,9 +113,9 @@
 </div>
 
 
-<!-- Add Post Button -->
-<button class="add-post-button" {% if user.is_authenticated %} data-toggle="modal" {% endif %} data-target="#postModal">
-<a {% if not user.is_authenticated %} href="" {% endif %} class="text-decoration-none text-light"><img src="{% static 'img/write.png' %}" alt=""></a></button>
+{% comment %} <!-- Add Post Button --> <i class="fa-duotone fa-feather"></i> {% endcomment %}
+<button class="add-post-button" {% if user.is_authenticated %} data-toggle="modal" {% endif %} data-target="#postModal"> 
+<a {% if not user.is_authenticated %} href="" {% endif %} class="text-decoration-none text-light"><i class="bi bi-plus-circle-fill" style="font-size: 45px; color: #000157;"></i></a></button>
 
 <!-- Post adding popup Window -->
 {% if request.user.is_authenticated %} 
@@ -122,7 +127,7 @@
                     {% csrf_token %}
                     <div class="form-group"><textarea class="form-control p-3" id="postContent" name ="content_text" rows="6" required minlength="50"></textarea></div>
                     <div class="row px-4 my-2">
-                        <p class="col-11 fw-lighter"><small>Capture your thoughts</small></p>
+                        <p class="col-11 fw-lighter"><small>Capture your thoughts</small></p> 
                         <button type="submit" class="col-1 btn btn-link p-0" ><i class="fa-solid fa-paper-plane" style="font-size: 20px; color: #000157;"></i></button>    
                     </div>
                     </div>
@@ -147,81 +152,6 @@
 
 <!-- Script for notofications -->
 
-<script type="module">
-    // Import the functions you need from the SDKs you need
-    
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-analytics.js";      
-   
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-  
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  
-    var firebaseConfig = {
-        apiKey: "AIzaSyCcIorddRYlJpkJBChKPDFRPGGKCdxunnE",
-        authDomain: "fikrinproject-bfa57.firebaseapp.com",
-        projectId: "fikrinproject-bfa57",
-        storageBucket: "fikrinproject-bfa57.appspot.com",
-        messagingSenderId: "682776541698",
-        appId: "1:682776541698:web:656c47a85c045ee455c51b",
-        measurementId: "G-0F7GK3B0C3"
-    };    
-  
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  
-  // Get Firebase Messaging instance
-  let messaging = firebase.messaging();
-  
-  // First, we need to link the service worker.
-  navigator.serviceWorker
-  .register('./myapp/sw.js') 
-  .then(function(register) {
-  messaging.useServiceWorker(register);
-  
-  // Request permission from the user to receive notifications
-  messaging.requestPermission()
-  .then(function() {
-    console.log("The user has accepted to receive notifications.");
-    return messaging.getToken();
-  })
-  .then(function(token){
-    console.log(token);
-  
-  //we will send the token to django to save it in the database
-  
-  fetch('save-token/', {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',    
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify({
-      'token': token
-    })
-  })
-    
-  .then(function(response) {
-    if (response.ok) {
-        console.log("Token has been saved");
-    } else {
-        console.log("Failed to save token. Status: " + response.status);
-    }
-  })
-  
-  .catch(function(e){
-    console.log("token could not be saved") 
-    })
-  
-  })
-  .catch(function(e) {
-    console.log("The user has not accepted.");
-  });
-  });
-  
-  </script>
-    
+
 {% endblock 'content' %}
 

@@ -7,14 +7,17 @@
     right: 20px;
     z-index: 999;
     /* background-color: #000157; */
-    color: #fff;
+    color: #000157;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 0;
+    border-radius: 50px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
+/* .add-post-button:hover {
+    background-color: #000157;
+} */
 
 /* Custom styles for the post window */
 .post-window {
