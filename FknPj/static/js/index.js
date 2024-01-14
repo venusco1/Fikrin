@@ -39,45 +39,47 @@ posts.forEach(post => {
 // read-more script 
 
 
-  function toggleContent(button) {
-    var content = button.previousElementSibling;
+function toggleContent(button) {
+var content = button.previousElementSibling;
 
-    if (content.style.overflow === "hidden") {
-      content.style.overflow = "visible";
-      content.style.maxHeight = "none";
-      button.innerText = "Read Less";
-    } else {
-      content.style.overflow = "hidden";
-      content.style.maxHeight = "195px"; // Adjust this value to match initial height
-      button.innerText = "Read More";
-    }
+if (content.style.overflow === "hidden") {
+  content.style.overflow = "visible";
+  content.style.maxHeight = "none";
+  button.innerText = "Read Less";
+} else {
+  content.style.overflow = "hidden";
+  content.style.maxHeight = "195px"; // Adjust this value to match initial height
+  button.innerText = "Read More";
+}
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+var contentDivs = document.querySelectorAll(".content");
+
+contentDivs.forEach(function(contentDiv) {
+  var words = contentDiv.textContent.trim().split(/\s+/).length;
+  var button = contentDiv.nextElementSibling;
+  
+  if (words > 35) {
+    contentDiv.style.overflow = "hidden";
+    contentDiv.style.maxHeight = "175px"; // Adjust this value to match initial height
+    button.style.display = "inline-block";
+  } else {
+    button.style.display = "none";
   }
+});
+});
 
-  document.addEventListener("DOMContentLoaded", function() {
-    var contentDivs = document.querySelectorAll(".content");
-    
-    contentDivs.forEach(function(contentDiv) {
-      var words = contentDiv.textContent.trim().split(/\s+/).length;
-      var button = contentDiv.nextElementSibling;
-      
-      if (words > 35) {
-        contentDiv.style.overflow = "hidden";
-        contentDiv.style.maxHeight = "175px"; // Adjust this value to match initial height
-        button.style.display = "inline-block";
-      } else {
-        button.style.display = "none";
-      }
+
+// JavaScript to show toast on click for each post without scrolling to top
+var scrollLinks = document.querySelectorAll('.scrollLink');
+
+scrollLinks.forEach(function(link) {
+    link.addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent the default behavior of the anchor link
+        var infoToast = new bootstrap.Toast(document.getElementById('infoToast'));
+        infoToast.show();
     });
-  });
+});
 
 
-    // JavaScript to show toast on click for each post without scrolling to top
-    var scrollLinks = document.querySelectorAll('.scrollLink');
-
-    scrollLinks.forEach(function(link) {
-        link.addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent the default behavior of the anchor link
-            var infoToast = new bootstrap.Toast(document.getElementById('infoToast'));
-            infoToast.show();
-        });
-    });
