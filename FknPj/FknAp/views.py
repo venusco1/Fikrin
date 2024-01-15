@@ -160,14 +160,38 @@ def comments(request, post_id):
 
         return render(request, 'comments.html', context)
 
+# def add_reply(request, post_id, comment_id):
+#     post = get_object_or_404(Post, id=post_id)
+#     parent_comment = get_object_or_404(Comment, pk=comment_id)
+#     commenter = request.user  # Assuming you're using Django's authentication
+
+#     if request.method == 'POST':
+#         body = request.POST.get('body')  # Retrieve the reply content from the request
+
+#         new_reply = Comment.objects.create(
+#             post=parent_comment.post,
+#             commenter=commenter,
+#             comment_content=body,
+#             parent_comment=parent_comment
+#         )
+
+#         # Assuming you want to redirect to the 'comments' view after adding a reply
+#         return redirect('FknAp:comments', post_id)
+
+#     # If it's not a POST request, render the 'replay.html' template with necessary context
+#     context = {
+#         'post': post,
+#         'comment': parent_comment,
+#     }
+#     return render(request, 'replay.html', context)
 
 def add_reply(request, post_id, comment_id):
     post = get_object_or_404(Post, id=post_id)
     parent_comment = get_object_or_404(Comment, pk=comment_id)
-    commenter = request.user  # Assuming you're using Django's authentication
+    commenter = request.user
 
     if request.method == 'POST':
-        body = request.POST.get('body')  # Retrieve the reply content from the request
+        body = request.POST.get('body')
 
         new_reply = Comment.objects.create(
             post=parent_comment.post,
@@ -176,18 +200,17 @@ def add_reply(request, post_id, comment_id):
             parent_comment=parent_comment
         )
 
-        # return JsonResponse({'message': 'Reply added successfully!', 'reply_id': new_reply.id})
-        comments = Comment.objects.filter(post=post, parent_comment=None).order_by('-comment_time')
-        customuser = CustomUser.objects.get(username=request.user.username)
-        context = {
-            'comments': comments,
-            'post': post,
-            'customuser': customuser
-        }
+        return redirect('FknAp:comments', post_id)
 
-        return render(request, 'comments.html', context)
-
-    return JsonResponse({'error': 'Invalid request'})
+    comments = Comment.objects.filter(post=post, parent_comment=None).order_by('-comment_time')
+    customuser = CustomUser.objects.get(username=request.user.username)
+    context = {
+        'comments': comments,
+        'post': post,
+        'customuser': customuser,
+        'parent_comment': parent_comment
+    }
+    return render(request, 'reply.html', context)
 
 
 def delete_comment(request, post_id, comment_id):

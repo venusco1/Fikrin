@@ -117,6 +117,10 @@ def profile_cropping(request, user_id):
 
 
 
+def about_us(request):
+    return render(request,'about-us.html')
+
+
 @csrf_exempt
 @require_http_methods(['POST'])
 def save_token(request):

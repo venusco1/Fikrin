@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block 'title' %}reply{% endblock 'title' %}
+
+{% block 'style' %}
+
+<link rel="stylesheet" href="{% static 'css/comment-styles.css' %}">
+
+<style>
+
+</style>
+
+{% endblock 'style' %}
+
+{% block 'content' %}
+<!-- header section -->
+<section>
+<div class="container-fluid sticky-top" style="padding: 0;">
+   <header class="navbar flex-md-nowrap p-0 shadow mb-0 pl-2" data-bs-theme="light" style="background-color: #000157;">  <!-- #000157 -->
+      <a class="navbar-brand fs-6 text-white pb-0" href="{% url 'FknAp:comments' post.id %}"> 
+         <i class="bi bi-arrow-left-circle px-2 fs-6" style="display: block; width: 105px; height: 40px"><small class="mx-2">Comments / Replies to {{ parent_comment.commenter }} </small></i>
+      </a> 
+   </header>
+</section>
+
+
+
+
+
+<div class="container mt-3">
+  <p class="lead mb-3 fs-6 text-center text-primary-emphasis">{{ parent_comment.comment_content  }}</p>
+
+  <!-- Comments Section -->
+  <div class="comments-container">
+  {% if parent_comment.replies.all %}
+      <!-- Display existing comments -->
+      {% for reply in parent_comment.replies.all %}
+      <div class="card comment-card mb-3">
+          <div class="card-body">
+              <h5 class="card-title text-primary-emphasis"><i class="bi bi-person-circle mx-2"></i><small>{{ reply.commenter.username }}</small></h5>
+              <p class="mb-2 mt-3">{{ reply.comment_content }}</p>
+              
+              {% if request.user.is_authenticated and customuser.username == reply.commenter.username %}
+              <form action="{% url 'FknAp:comment_delete' post.id reply.id %}" method="post">
+                 {% csrf_token %}
+                 <button type="submit" class="btn text-danger btn-sm float-right mr-2">Delete</button>
+                 {% endif %}
+                 {% if reply.replies.count == 0 %}<a href="{% url 'FknAp:add_reply' post.id reply.id %}" class="btn text-primary btn-sm float-right mr-2">Reply 
+                 {% else %} <a href="{% url 'FknAp:add_reply' post.id reply.id %}" class="btn text-primary btn-sm float-right mr-2">{{ reply.replies.count }} {{ reply.replies.count|pluralize:"Reply,Replies" }}  {% endif %}
+                </a>
+              </form>
+              
+          </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  {% else %} 
+
+<div class="text-center mt-5">
+  <p class="fw-lighter">No replies yet. Be the first one to reply!</p>
+</div>
+
+  {% endif %}
+
+
+
+
+  <!-- New Replay Form -->
+<form method="post" action="{% url 'FknAp:add_reply' post.id parent_comment.id %}" class="comment-form">
+  {% csrf_token %}
+  <div class="input-group">
+      <textarea class="form-control border-0" placeholder="Add a Replay" name="body" id="my-comment-reply" style="height: 2.5rem;" required minlength="1"></textarea>
+      <div class="input-group-append ms-1">
+          <button class="btn btn-link-light" type="submit">
+              <i class="far fa-paper-plane"></i> 
+          </button>
+      </div>
+  </div>
+</form>
+
+
+
+{% endblock 'content' %}

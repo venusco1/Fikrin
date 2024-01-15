@@ -12,7 +12,7 @@ urlpatterns = [
     path('signout/', views.signout, name='signout'),
     path('profile/', views.profile, name='profile'),
     path('profile_cropping/<int:user_id>/', views.profile_cropping, name="profile_cropping"),
-
+    path('about/',views.about_us, name='about-us'),
     path('save-token/', views.save_token, name='save_token'),
 ]
 
