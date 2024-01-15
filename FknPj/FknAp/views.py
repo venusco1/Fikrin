@@ -16,37 +16,8 @@ import json
 import requests
 from fcm_django.models import FCMDevice
 
-# def send_notification(registration_ids, message_title, message_desc, post_id):
-#     print('i have reached in-side of the "send_notification" function ')
-#     fcm_api = "AAAAkV-gc5c:APA91bF4PJPVDpihuGhCzMljtG1RjI-ZOn0xLr8UscqsQGw6nPZ7mDz9ttTeXZUj6LHjT1fdwkhUEdXYa22jR-dJ-OEr3_MDwTbVNUsTB8Wofl8H8ApQ8Sbo8dkEnFNTR5OXeOIrtKTS"
-#     url = "https://fcm.googleapis.com/fcm/send"
+def send_notification(registration_ids, message_title, message_desc, post_id):
 
-#     headers = {
-#         "Content-Type": "application/json",
-#         "Authorization": 'key=' + fcm_api
-#     }
-
-#     payload = {
-#         "registration_ids": registration_ids,
-#         "priority": "high",
-#         "notification": {
-#             "body": message_desc,
-#             "title": str(message_title) + ": ",
-
-#         },
-#         "data": {
-#             "post_id": post_id,
-#         }
-#     }
-
-#     result = requests.post(url, data=json.dumps(payload), headers=headers)
-#     print(result.json())
-
-import json
-import requests
-
-def send_notification(registration_ids, message_title, message_desc, post_id, icon_url, click_action_url):
-    print('I have reached inside the "send_notification" function')
     fcm_api = "AAAAkV-gc5c:APA91bF4PJPVDpihuGhCzMljtG1RjI-ZOn0xLr8UscqsQGw6nPZ7mDz9ttTeXZUj6LHjT1fdwkhUEdXYa22jR-dJ-OEr3_MDwTbVNUsTB8Wofl8H8ApQ8Sbo8dkEnFNTR5OXeOIrtKTS"
     url = "https://fcm.googleapis.com/fcm/send"
 
@@ -60,17 +31,46 @@ def send_notification(registration_ids, message_title, message_desc, post_id, ic
         "priority": "high",
         "notification": {
             "body": message_desc,
-            "title": str(message_title) + ":",
-            "icon": 'static/img/fkr.png',  # Add the icon URL here
+            "title": str(message_title) + ": ",
+
         },
         "data": {
             "post_id": post_id,
-            "click_action": 'https://fikr.in',  # Add the click action URL here
         }
     }
 
     result = requests.post(url, data=json.dumps(payload), headers=headers)
     print(result.json())
+
+# import json
+# import requests
+
+# def send_notification(registration_ids, message_title, message_desc, post_id, icon_url, click_action_url):
+#     print('I have reached inside the "send_notification" function')
+#     fcm_api = "AAAAkV-gc5c:APA91bF4PJPVDpihuGhCzMljtG1RjI-ZOn0xLr8UscqsQGw6nPZ7mDz9ttTeXZUj6LHjT1fdwkhUEdXYa22jR-dJ-OEr3_MDwTbVNUsTB8Wofl8H8ApQ8Sbo8dkEnFNTR5OXeOIrtKTS"
+#     url = "https://fcm.googleapis.com/fcm/send"
+
+#     headers = {
+#         "Content-Type": "application/json",
+#         "Authorization": 'key=' + fcm_api
+#     }
+
+#     payload = {
+#         "registration_ids": registration_ids,
+#         "priority": "high",
+#         "notification": {
+#             "body": message_desc,
+#             "title": str(message_title) + ":",
+#             "icon": 'static/img/fkr.png',  # Add the icon URL here
+#         },
+#         "data": {
+#             "post_id": post_id,
+#             "click_action": 'https://fikr.in',  # Add the click action URL here
+#         }
+#     }
+
+#     result = requests.post(url, data=json.dumps(payload), headers=headers)
+#     print(result.json())
 
 
 @login_required
