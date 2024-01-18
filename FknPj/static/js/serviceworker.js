@@ -1,17 +1,18 @@
-
-
-
-var CACHE_NAME = 'my-site-cache-v1';
-var urlsToCache = [
-  '/',
-  
+const staticCacheName = 'site-static-1';
+const dynamicCacheName = 'site-dynamic-1';
+const assets = [
+    '/',
+    '/static/css/bootstrap.min.css', '/static/css/comment-styles.css', '/static/css/index-styles.css', '/static/css/login-styles.css',  '/static/css/profile-styles.css',  '/static/css/styles.css',
+    '/static/js/app.js','/static/js/bootstrap.bundle.min.js',  '/static/js/cropper.js',  '/static/js/index.js', '/static/js/ui.js',
 ];
+
+
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
+    caches.open(staticCacheName).then(function(cache) {
       console.log('Opened cache');
-      return cache.addAll(urlsToCache);
+      return cache.addAll(assets);
     })
   );
 });
@@ -20,7 +21,7 @@ self.addEventListener('fetch', function(event) {
   event.respondWith(
     fetch(event.request)
       .then(function(result) {
-        return caches.open(CACHE_NAME).then(function(c) {
+        return caches.open(staticCacheName).then(function(c) {
           c.put(event.request.url, result.clone());
           return result;
         });
@@ -31,27 +32,60 @@ self.addEventListener('fetch', function(event) {
   );
 });
 
-// Check for updates
-self.addEventListener('activate', function(event) {
-  event.waitUntil(
-    caches.keys().then(function(cacheNames) {
-      return Promise.all(
-        cacheNames.map(function(cacheName) {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+// // Check for updates
+// self.addEventListener('activate', function(event) {
+//   event.waitUntil(
+//     caches.keys().then(function(cacheNames) {
+//       return Promise.all(
+//         cacheNames.map(function(cacheName) {
+//           if (cacheName !== CACHE_NAME) {
+//             return caches.delete(cacheName);
+//           }
+//         })
+//       );
+//     })
+//   );
+// });
+
+// // Automatic updates
+// self.addEventListener('message', function(event) {
+//   if (event.data === 'skipWaiting') {
+//     self.skipWaiting();
+//   }
+// });
+
+
+
+
+// activate event
+self.addEventListener('activate', evt => {  
+  evt.waitUntil(
+      caches.keys().then(keys => {
+      return Promise.all(keys
+          .filter(key => key !== staticCacheName)
+          .map(key => caches.delete(key))
+          )
+      })
   );
 });
 
-// Automatic updates
-self.addEventListener('message', function(event) {
-  if (event.data === 'skipWaiting') {
-    self.skipWaiting();
-  }
+
+// fetch event
+self.addEventListener('fetch', evt => {
+  evt.respondwith(
+      caches.match(evt.request).then(cacheRes => {
+          return cacheRes || fetch(evt.request).then(fetchRes => {
+              return caches.open(dynamicCache).then(cache => {
+                  CacheStorage.put(evt.request.url, fetchRes.clone());
+                  return fetchRes;
+              }
+
+              )
+          })
+      })
+  );
 });
+
 
 // codigo para notificaciones push
 

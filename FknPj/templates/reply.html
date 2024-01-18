@@ -42,15 +42,42 @@
               <h5 class="card-title text-primary-emphasis"><i class="bi bi-person-circle mx-2"></i><small>{{ reply.commenter.username }}</small></h5>
               <p class="mb-2 mt-3">{{ reply.comment_content }}</p>
               
-              {% if request.user.is_authenticated and customuser.username == reply.commenter.username %}
-              <form action="{% url 'FknAp:comment_delete' post.id reply.id %}" method="post">
-                 {% csrf_token %}
-                 <button type="submit" class="btn text-danger btn-sm float-right mr-2">Delete</button>
-                 {% endif %}
-                 {% if reply.replies.count == 0 %}<a href="{% url 'FknAp:add_reply' post.id reply.id %}" class="btn text-primary btn-sm float-right mr-2">Reply 
-                 {% else %} <a href="{% url 'FknAp:add_reply' post.id reply.id %}" class="btn text-primary btn-sm float-right mr-2">{{ reply.replies.count }} {{ reply.replies.count|pluralize:"Reply,Replies" }}  {% endif %}
-                </a>
-              </form>
+              {% comment %} <div class="container">
+                <div class="row">
+                    <div class="col-3 px-0">
+                        <form action="{% url 'FknAp:add_reply' post.id reply.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn text-danger btn-sm float-right mr-2">
+                              {{ reply.replies.count }} {{ reply.replies.count|pluralize:"Reply,Replies" }} Reply</button>
+                        </form>
+                    </div>
+                    <div class="col-3">
+                        {% if request.user.is_authenticated and customuser.username == cmt.commenter.username %}
+                            <form action="{% url 'FknAp:comment_delete' post.id reply.id %}" method="post">
+                                <button type="submit" class="btn text-danger btn-sm float-right mr-2">Delete</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+                </div> {% endcomment %}
+                <div class="container">
+                  <div class="row">
+                      <div class="col-3 px-0">
+                          {% if reply.replies.count == 0 %}
+                              <a href="{% url 'FknAp:add_reply' post.id reply.id %}" class="btn text-primary btn-sm float-right mr-2">Reply</a>
+                          {% else %} <a href="{% url 'FknAp:add_reply' post.id reply.id %}" class="btn text-primary btn-sm float-right mr-2">
+                              {{ reply.replies.count }} {{ reply.replies.count|pluralize:"Reply,Replies" }}</a>{% endif %}
+                      </div>
+                      <div class="col-3">
+                          {% if request.user.is_authenticated and customuser.username == reply.commenter.username %}
+                              <form action="{% url 'FknAp:comment_delete' post.id reply.id %}" method="post">
+                                {% csrf_token %}
+                                  <button type="submit" class="btn text-danger btn-sm float-right mr-2">Delete</button>
+                              </form>
+                          {% endif %}
+                      </div>
+                  </div>
+                  </div>
               
           </div>
       </div>
@@ -66,21 +93,17 @@
   {% endif %}
 
 
-
-
-  <!-- New Replay Form -->
+<!-- New Reply Form -->
 <form method="post" action="{% url 'FknAp:add_reply' post.id parent_comment.id %}" class="comment-form">
   {% csrf_token %}
   <div class="input-group">
-      <textarea class="form-control border-0" placeholder="Add a Replay" name="body" id="my-comment-reply" style="height: 2.5rem;" required minlength="1"></textarea>
+      <textarea class="form-control border-0" placeholder="Add a Reply" name="body" id="my-comment-reply" style="height: 2.5rem;" required minlength="1"></textarea>
       <div class="input-group-append ms-1">
           <button class="btn btn-link-light" type="submit">
-              <i class="far fa-paper-plane"></i> 
+              <i class="far fa-paper-plane"></i>
           </button>
       </div>
   </div>
 </form>
-
-
 
 {% endblock 'content' %}

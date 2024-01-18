@@ -34,14 +34,35 @@
                <h5 class="card-title text-primary-emphasis"><i class="bi bi-person-circle mx-2"></i><small>{{ cmt.commenter }}</small></h5>
                <p class="mb-2 mt-3">{{ cmt.comment_content }}</p>
                
-               {% if request.user.is_authenticated and customuser.username == cmt.commenter.username %}
-               <form action="{% url 'FknAp:comment_delete' post.id cmt.id %}" method="post">
+               <div class="container">
+                <div class="row">
+                    <div class="col-3 px-0">
+                        {% if cmt.replies.count == 0 %}
+                            <a href="{% url 'FknAp:add_reply' post.id cmt.id %}" class="btn text-primary btn-sm float-right mr-2">Reply</a>
+                        {% else %} <a href="{% url 'FknAp:add_reply' post.id cmt.id %}" class="btn text-primary btn-sm float-right mr-2">
+                            {{ cmt.replies.count }} {{ cmt.replies.count|pluralize:"Reply,Replies" }}</a>{% endif %}
+                    </div>
+                    <div class="col-3">
+                        {% if request.user.is_authenticated and customuser.username == cmt.commenter.username %}
+                            <form action="{% url 'FknAp:comment_delete' post.id cmt.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn text-danger btn-sm float-right mr-2">Delete</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+                </div>
+               
+               
+
+
+               {% comment %} <form action="{% url 'FknAp:comment_delete' post.id cmt.id %}" method="post">
                   {% csrf_token %}
                   <button type="submit" class="btn text-danger btn-sm float-right mr-2">Delete</button>
                   {% endif %}
                   {% if cmt.replies.count == 0 %}<a href="{% url 'FknAp:add_reply' post.id cmt.id %}" class="btn text-primary btn-sm float-right mr-2">Reply 
                     {% else %} <a href="{% url 'FknAp:add_reply' post.id cmt.id %}" class="btn text-primary btn-sm float-right mr-2">{{ cmt.replies.count }} {{ cmt.replies.count|pluralize:"Reply,Replies" }}  {% endif %}
-               </form>
+               </form> {% endcomment %}
                
            </div>
        </div>
@@ -66,33 +87,5 @@
 
 {% endblock 'content' %}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{% comment %} 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Comments Page</title>
-    <!-- Add Bootstrap CSS link here -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Font Awesome for icons -->
-
-</head> {% endcomment %}
 
 
