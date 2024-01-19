@@ -146,7 +146,8 @@ LOGIN_URL = '/accounts/login/'# 1 hour (adjust as needed)
 # Define PWA settings
 PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
 
-PWA_APP_NAME = 'Fikrin'
+PWA_APP_NAME = 'Welcome to Fikrin'
+PWA_APP_SHORT_NAME = 'Fikrin'
 PWA_APP_DESCRIPTION = "🌟 Welcome to Fikrin, an innovative social platform that promises to redefine your reading experience and ignite your passion for literature. 📚✨"
 PWA_APP_THEME_COLOR = '#000157'
 PWA_APP_BACKGROUND_COLOR = '#ffffff'

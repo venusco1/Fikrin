@@ -16,20 +16,21 @@
 
 {% block 'content' %}
 <!-- header section -->
+
 <section>
-<div class="container-fluid sticky-top" style="padding: 0;">
-   <header class="navbar flex-md-nowrap p-0 shadow mb-0 pl-2" data-bs-theme="light" style="background-color: #000157;">  <!-- #000157 -->
-      <a class="navbar-brand fs-6 text-white pb-0" href="{% url 'FknAp:comments' post.id %}"> 
-         <i class="bi bi-arrow-left-circle px-2 fs-6" style="display: block; width: 105px; height: 40px"><small class="mx-2">Comments / Replies to {{ parent_comment.commenter }} </small></i>
-      </a> 
-   </header>
-</section>
+    <div class="container-fluid fixed-top" style="padding: 0; ">
+      <header class="navbar flex-md-nowrap  shadow " data-bs-theme="light" style="background-color: #000157;">  <!-- #000157 -->
+          <a class="navbar-brand fs-5 text-white px-3" href="{% url 'FknAp:comments' post.id %}">
+            <i class="bi bi-arrow-left" style="display: block; width: 140px; height: 40px"><small class="fs-6 mx-2">Comments / Replies to {{ parent_comment.commenter }}</small></i>
+          </a>
+      </header>
+  </section>
 
 
 
 
 
-<div class="container mt-3">
+<div class="container" style="margin-top:105px;">
   <p class="lead mb-3 fs-6 text-center text-primary-emphasis">{{ parent_comment.comment_content  }}</p>
 
   <!-- Comments Section -->

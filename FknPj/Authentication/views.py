@@ -11,6 +11,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_http_methods
 import json
 from fcm_django.models import FCMDevice
+from django.contrib.auth.decorators import login_required
+
 
 
 def home(request):
@@ -22,7 +24,7 @@ def home(request):
             return render(request, 'index.html', context)
         except ObjectDoesNotExist:
             pass
-
+                                                                                                                                                                                                                                
     return render(request, 'index.html', {'posts': posts})
 
 
@@ -96,6 +98,21 @@ def profile(request):
     context = {'customuser': customuser}
     return render(request, "profile.html", context)
 
+
+
+def gallery_view(request):
+    images = GalleryImage.objects.all()
+    return render(request, 'gallery.html', {'images': images})
+
+
+
+@login_required
+def set_profile_pic(request, image_id):
+    customuser = CustomUser.objects.get(username=request.user.username)
+    image = GalleryImage.objects.get(pk=image_id)
+    customuser.profile_pic = image.image
+    customuser.save()
+    return redirect('Authentication:home')
 
 
 def profile_cropping(request, user_id):

@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block 'title' %}about us{% endblock 'title' %}
+{% block 'title' %}about-us{% endblock 'title' %}
 
 {% block 'content' %}
 
@@ -59,15 +59,15 @@ p {
 </style>
 
 <section>
-    <div class="container-fluid sticky-top" style="padding: 0;">
-      <header class="navbar flex-md-nowrap p-0 shadow mb-0 pl-2" data-bs-theme="light" style="background-color: #000157;">  <!-- #000157 -->
-          <a class="navbar-brand fs-5 text-white pb-0" href="{% url 'Authentication:home' %}">
-            <i class="bi bi-house-fill px-2" style="display: block; width: 105px; height: 40px"><small class="fs-6 mx-2">About us</small></i>
+    <div class="container-fluid fixed-top" style="padding: 0;">
+      <header class="navbar flex-md-nowrap pe-0 shadow mb-0 pl-2 py-2 ml-3" data-bs-theme="light" style="background-color: #000157;">  <!-- #000157 -->
+          <a class="navbar-brand fs-5 text-white" href="{% url 'Authentication:home' %}">
+            <i class="bi bi-arrow-left" style="display: block; width: 140px; height: 40px"><small class="fs-6 mx-2">About us</small></i>
           </a>
       </header>
   </section>
 
-<div class="container pt-5">
+<div class="container" style="padding-bottom:95px; padding-top:95px;">
         
 
 🌟 Welcome to Fikrin, an innovative social platform that promises to redefine your reading experience and ignite your
@@ -105,7 +105,7 @@ Join us on this extraordinary journey as we celebrate the power of words, foster
  and build a vibrant community of readers and writers. 
  Experience Fikrin today and let your literary adventure begin! 📚🌍✍️
         
-<div class="social-links">
+<div class="container-fluid fixed-bottom social-links bg-light py-1">
     <a href="https://www.instagram.com/fikrin.__/" class="text-decoration-none pt-0">Follow us</a>
     <a href="https://www.instagram.com/fikrin.__/" target="_blank" title="Instagram" class="pt-0"><i class="fab fa-instagram"></i></a>
 </div>

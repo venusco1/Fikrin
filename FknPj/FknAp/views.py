@@ -147,6 +147,23 @@ def comments(request, post_id):
             parent_comment=parent_comment,
         )
 
+        try:
+            devices = FCMDevice.objects.filter(active=True)
+            registration_ids = [device.registration_id for device in devices]
+
+            if registration_ids:
+                message_title = request.user
+                message_desc = 'You have a new comment on your post'
+                send_notification(registration_ids, message_title, message_desc, post_id)
+                print('Notification sent to {} devices.'.format(len(registration_ids)))
+            else:
+                print('No active devices found for sending notifications.')
+
+        except ObjectDoesNotExist:
+            print('An error occurred: FCMDevice model not found or misconfigured.')
+        except Exception as e:
+            print('An error occurred:', str(e))
+
         return redirect('FknAp:comments', post_id)
     else:
         comments = Comment.objects.filter(post=post, parent_comment=None).order_by('-comment_time')
@@ -174,6 +191,23 @@ def add_reply(request, post_id, comment_id):
             comment_content=body,
             parent_comment=parent_comment
         )
+
+        try:
+            devices = FCMDevice.objects.filter(active=True)
+            registration_ids = [device.registration_id for device in devices]
+
+            if registration_ids:
+                message_title = request.user
+                message_desc = 'You have a new reply on your post'
+                send_notification(registration_ids, message_title, message_desc, post_id)
+                print('Notification sent to {} devices.'.format(len(registration_ids)))
+            else:
+                print('No active devices found for sending notifications.')
+
+        except ObjectDoesNotExist:
+            print('An error occurred: FCMDevice model not found or misconfigured.')
+        except Exception as e:
+            print('An error occurred:', str(e))
 
         return redirect('FknAp:comments', post_id)
 

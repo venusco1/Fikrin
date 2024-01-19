@@ -27,11 +27,12 @@
 <section>
 
   <div class="profile">
-    <a href="{% url 'Authentication:profile_cropping' user_id=user.id %}">
-      
+    <!-- <a href="{% url 'Authentication:profile_cropping' user_id=user.id %}"> </a> -->
+    <a href="{% url 'Authentication:gallery' %}">
       <div class="img">
+        
         {% if customuser.profile_pic %}<img src="{{ customuser.profile_pic.url }}"/>
-        {% else %}<img src="{% static 'img/profile_avatar.png' %}"/>{% endif %}
+        {% else %}<img src="{% static 'img/profile_avatar.png' %}"/>{% endif %} 
     </div>
     </a>
     
@@ -44,8 +45,7 @@
       <div class="line"></div>
       <div class="stats">
         <div class="stat mt-3">
-          <a href="{% url 'Authentication:signout' %}">
-            <button class="btn btn-primary" style="background-color: #020481; border: 0;">Sign Out</button></a>
+          <a href="{% url 'Authentication:signout' %}" class="btn btn-primary" style="background-color: #020481; border: 0;">Sign Out</a>
         </div>
       </div>
     </div>
