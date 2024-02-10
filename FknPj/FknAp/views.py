@@ -32,6 +32,7 @@ def send_notification(registration_ids, message_title, message_desc, post_id):
         "notification": {
             "body": message_desc,
             "title": str(message_title) + ": ",
+            "click_action": "https://fikr.in/" 
 
         },
         "data": {
@@ -42,36 +43,6 @@ def send_notification(registration_ids, message_title, message_desc, post_id):
     result = requests.post(url, data=json.dumps(payload), headers=headers)
     print(result.json())
 
-# import json
-# import requests
-
-# def send_notification(registration_ids, message_title, message_desc, post_id, icon_url, click_action_url):
-#     print('I have reached inside the "send_notification" function')
-#     fcm_api = "AAAAkV-gc5c:APA91bF4PJPVDpihuGhCzMljtG1RjI-ZOn0xLr8UscqsQGw6nPZ7mDz9ttTeXZUj6LHjT1fdwkhUEdXYa22jR-dJ-OEr3_MDwTbVNUsTB8Wofl8H8ApQ8Sbo8dkEnFNTR5OXeOIrtKTS"
-#     url = "https://fcm.googleapis.com/fcm/send"
-
-#     headers = {
-#         "Content-Type": "application/json",
-#         "Authorization": 'key=' + fcm_api
-#     }
-
-#     payload = {
-#         "registration_ids": registration_ids,
-#         "priority": "high",
-#         "notification": {
-#             "body": message_desc,
-#             "title": str(message_title) + ":",
-#             "icon": 'static/img/fkr.png',  # Add the icon URL here
-#         },
-#         "data": {
-#             "post_id": post_id,
-#             "click_action": 'https://fikr.in',  # Add the click action URL here
-#         }
-#     }
-
-#     result = requests.post(url, data=json.dumps(payload), headers=headers)
-#     print(result.json())
-
 
 @login_required
 def create_post(request):
@@ -80,11 +51,9 @@ def create_post(request):
 
         post = Post.objects.create(creater=request.user, content_text=content_text)
 
-        # Get the ID of the newly created post
         post_id = post.id
-
         try:
-            devices = FCMDevice.objects.filter(active=True)
+            devices = FCMDevice.objectsNotification.filter(active=True)
             registration_ids = [device.registration_id for device in devices]
 
             if registration_ids:
@@ -147,6 +116,10 @@ def comments(request, post_id):
             parent_comment=parent_comment,
         )
 
+        # Save notification
+        message = f" By {request.user.username}: {comment_text}"
+        notification = Notification.objects.create(user=request.user, post=post, message=message)
+
         try:
             devices = FCMDevice.objects.filter(active=True)
             registration_ids = [device.registration_id for device in devices]
@@ -166,14 +139,14 @@ def comments(request, post_id):
 
         return redirect('FknAp:comments', post_id)
     else:
-        comments = Comment.objects.filter(post=post, parent_comment=None).order_by('-comment_time')
+        comments = Comment.objects.filter(post=post, parent_comment=None)
         customuser = CustomUser.objects.get(username=request.user.username)
+                 
         context = {
-            'comments': comments,
-            'post': post,
-            'customuser': customuser
+            'comments': comments, 'post': post,
+            'customuser': customuser,
         }
-
+    
         return render(request, 'comments.html', context)
 
 
@@ -191,6 +164,10 @@ def add_reply(request, post_id, comment_id):
             comment_content=body,
             parent_comment=parent_comment
         )
+        
+        # Save notification
+        message = f" By {request.user.username}: {body}"
+        notification = Notification.objects.create(user=request.user, post=post, message=message)
 
         try:
             devices = FCMDevice.objects.filter(active=True)
@@ -211,7 +188,7 @@ def add_reply(request, post_id, comment_id):
 
         return redirect('FknAp:comments', post_id)
 
-    comments = Comment.objects.filter(post=post, parent_comment=None).order_by('-comment_time')
+    comments = Comment.objects.filter(post=post, parent_comment=None)
     customuser = CustomUser.objects.get(username=request.user.username)
     context = {
         'comments': comments,
@@ -228,7 +205,7 @@ def delete_comment(request, post_id, comment_id):
     if request.method == 'POST':
         comment = get_object_or_404(Comment, pk=comment_id)
         comment.delete()
-        comments = Comment.objects.filter(post=post, parent_comment=None).order_by('-comment_time')
+        comments = Comment.objects.filter(post=post, parent_comment=None)
 
         customuser = CustomUser.objects.get(username=request.user.username)
         context = {
@@ -271,4 +248,23 @@ def unlike_post(request, id):
                 return HttpResponse(e)
         else:
             return HttpResponse("Method must be 'PUT'")
+
+
+def view_notifications(request):
+    user_notifications = Notification.objects.filter(user=request.user).order_by('-timestamp')
+
+    context = {
+        'notifications': user_notifications,
+    }
+    return render(request, 'noti.html', context)
+
+
+
+
+def clear_notifications(request):
+    user_notifications = Notification.objects.filter(user=request.user).order_by('-timestamp')
+    user_notifications.all().delete() 
+    return redirect('Authentication:home')
+
+
 

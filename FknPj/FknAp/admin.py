@@ -16,11 +16,19 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ('post__title', 'commenter__username', 'comment_content')
     readonly_fields = ('comment_time',)
 
+
     # Optionally, if you want to customize how the model is displayed in the admin panel.
     def __str__(self):
         return f"Post: {self.post} | Commenter: {self.commenter}"
 
 admin.site.register(Comment, CommentAdmin)
+
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'post', 'message', 'timestamp')
+    search_fields = ('user__username', 'message')
+
+admin.site.register(Notification, NotificationAdmin)
+
 
 
 """ Username: nzmdn

@@ -16,63 +16,76 @@
     <div class="container-fluid fixed-top" style="padding: 0;">
       <header class="navbar flex-md-nowrap pe-0 shadow mb-0 pl-2 py-2" data-bs-theme="light" style="background-color: #000157;">  <!-- #000157 -->
           <a class="navbar-brand fs-5 text-white px-3" href="{% url 'Authentication:home' %}">
-            <i class="bi bi-arrow-left px-2" style="display: block; width: 165px; height: 40px"><small class="fs-6 mx-2">Comments</small></i>
-          </a> <i class=""></i>
+            <i class="bi bi-arrow-left px-2 fw-bold" style="display: block; width: 165px; height: 40px"><small class="fs-6 mx-2"><b>Comments</b></small></i>
+          </a>
       </header>
-  </section>
-
-
-<div class="container" style="margin-top:105px;">
-   <p class="lead mb-4 fs-6 text-center text-primary-emphasis">{{ post.content_text }}</p>
-
-   <!-- Comments Section -->
-   <div class="comments-container">
-       <!-- Display existing comments -->
-       {% for cmt in comments %}
-       <div class="card comment-card mb-3">
-           <div class="card-body">
-               <h5 class="card-title text-primary-emphasis"><i class="bi bi-person-circle mx-2"></i><small>{{ cmt.commenter }}</small></h5>
-               <p class="mb-2 mt-3">{{ cmt.comment_content }}</p>
-               
-               <div class="container">
-                <div class="row">
-                    <div class="col-3 px-0">
-                        {% if cmt.replies.count == 0 %}
-                            <a href="{% url 'FknAp:add_reply' post.id cmt.id %}" class="btn text-primary btn-sm float-right mr-2">Reply</a>
-                        {% else %} <a href="{% url 'FknAp:add_reply' post.id cmt.id %}" class="btn text-primary btn-sm float-right mr-2">
-                            {{ cmt.replies.count }} {{ cmt.replies.count|pluralize:"Reply,Replies" }}</a>{% endif %}
-                    </div>
-                    <div class="col-3">
-                        {% if request.user.is_authenticated and customuser.username == cmt.commenter.username %}
-                            <form action="{% url 'FknAp:comment_delete' post.id cmt.id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="btn text-danger btn-sm float-right mr-2">Delete</button>
-                            </form>
-                        {% endif %}
-                    </div>
-                </div>
-                </div>
-               
-           </div>
-       </div>
-       {% endfor %}
-   </div>
-
-
-  <!-- New Comment Form -->
-<form method="post" action="{% url 'FknAp:comments' post.id %}" class="comment-form">
-    {% csrf_token %}
-    <div class="input-group">
-        <textarea class="form-control border-0" placeholder="Add a comment" name="comment_text" id="my-comment-reply" style="height: 2.5rem;" required minlength="1"></textarea>
-        <div class="input-group-append ms-1">
-            <button class="btn btn-link-light" type="submit">
-                <i class="far fa-paper-plane"></i> 
-            </button>
-        </div>
+      <div class="container pt-2 bg-white">
+        <div class="content"><p class="text-gray-700 mt-2 mb-0" id="content" style="white-space: pre-wrap;">{{ post.content_text }}</p></div>
+        <button class="btn btn-sm btn-link text-decoration-none p-0 mt-1" onclick="toggleContent(this)" style="padding:0;">Read More</button>
+        <hr class="my-2">
+      </div>
     </div>
-</form>
+</section>
+<div class="container" style="margin-top: 175px;">
+
+    <!-- Comments Section -->
+    <div class="comments-container">
+        <!-- Display existing comments -->
+        {% for cmt in comments %}
+        <div id="comment_{{ cmt.id }}" class="card comment-card mb-3"> <!-- Add id to each comment -->
+            <div class="card-body">
+                <h5 class="card-title text-primary-emphasis"><i class="bi bi-person-circle mx-2"></i><small>{{ cmt.commenter }}</small></h5>
+                <div class="content">
+                    <p class="text-gray-700 mt-2 mb-0" id="content" style="white-space: pre-wrap;">{{ cmt.comment_content }}</p>
+                </div>
+                <button class="btn btn-sm btn-link text-decoration-none p-0 mt-2" onclick="toggleContent(this)">Read More</button>
+
+                <div><small class="text-body-secondary fw-lighter">
+                    Updated {{ cmt.comment_time|timesince }} ago
+                </small></div>
+
+                <div class="container mt-0">
+                    <div class="row">
+                        <div class="col-3 px-0 mx-0">
+                            {% if cmt.replies.count == 0 %}
+                                <a href="{% url 'FknAp:add_reply' post.id cmt.id %}" class="btn text-danger btn-sm float-right mx-0">Reply</a>
+                            {% else %} <a href="{% url 'FknAp:add_reply' post.id cmt.id %}" class="btn text-primary btn-sm float-right mr-2">
+                                {{ cmt.replies.count }} {{ cmt.replies.count|pluralize:"Reply,Replies" }}</a>{% endif %}
+                        </div>
+                        <div class="col-3">
+                            {% if request.user.is_authenticated and customuser.username == cmt.commenter.username %}
+                                <form action="{% url 'FknAp:comment_delete' post.id cmt.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn text-danger btn-sm float-right mr-2">Delete</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+    <!-- New Comment Form -->
+    <form method="post" action="{% url 'FknAp:comments' post.id %}" class="comment-form">
+        {% csrf_token %}
+        <div class="input-group">
+            <textarea class="form-control border-0" placeholder="Add a comment" name="comment_text" id="my-comment-reply" style="height: 2.5rem;" required minlength="20"></textarea>
+            <div class="input-group-append ms-1">
+                <button class="btn btn-link-light" type="submit">
+                    <i class="far fa-paper-plane"></i> 
+                </button>
+            </div>
+        </div>
+    </form>
 
 </div>
+
+
+<script src="{% static 'js/comments.js' %}"></script>
 
 {% endblock 'content' %}
 

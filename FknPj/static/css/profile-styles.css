@@ -1,7 +1,7 @@
 
 .profile {
   width: 100%;
-  height: 390px;
+  height: 450px;
   padding-right: 0;
   padding-left: 0;
   margin: 0;
@@ -89,13 +89,14 @@
   font-size: 0.6em;
   font-weight: normal;
 }
-.profile .img {
+/* .profile .img {
   height: 130px;
   width: 100%;
   background-image: linear-gradient(rgba(0, 23, 153, 0.4), rgb(49, 50, 109)), url("https://static.pexels.com/photos/21014/pexels-photo-medium.jpg");  padding: 20px;
   box-sizing: border-box;
   position: relative;
-}
+} */
+
 .profile .img img {
   width: 160px;
   height: 160px;

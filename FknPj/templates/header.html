@@ -1,13 +1,18 @@
 {% load static %}
 
-<div class="container-fluid sticky-top w-100 mx-0" style="padding: 0;">
+<div class="container-fluid sticky-top w-100 mx-0 p-0">
     <header class="navbar flex-md-nowrap p-0 shadow mb-0" data-bs-theme="light" style="background-color: #000157;"> 
-        <a class="navbar-brand fs-6 text-white" href="#">
+        <a class="navbar-brand fs-6 text-white" href="{% url 'Authentication:home' %}">
             <img src="{% static 'img/fkrnlogo.png' %}" style="width: 105px; height: 60px" alt="Logo">
         </a>
         <ul class="navbar-nav flex-row d-md-none">
             <li class="nav-item text-nowrap">
-                <a href="" class="nav-link px-3"></a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'FknAp:show-noti' %}" class="nav-link px-3">
+                    <i type="button" class="bi bi-bell-fill position-relative text-light">
+                        <span class="position-absolute top-50 ms-1 start-100 translate-middle badge rounded-pill"></span>
+                    </i> {% endif %}
+                </a>
             </li>
             <li class="nav-item text-nowrap">
                 <button class="nav-link px-3 text-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
