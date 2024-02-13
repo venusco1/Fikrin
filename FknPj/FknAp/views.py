@@ -109,12 +109,14 @@ def comments(request, post_id):
         if parent_comment_id:
             parent_comment = Comment.objects.get(id=parent_comment_id)
 
-        new_comment = Comment.objects.create(
-            post=post,
-            commenter=request.user,
-            comment_content=comment_text,
-            parent_comment=parent_comment,
-        )
+        # Check if the post belongs to the user
+        if post.creater == request.user:
+            new_comment = Comment.objects.create(
+                post=post,
+                commenter=request.user,
+                comment_content=comment_text,
+                parent_comment=parent_comment,
+            )
 
         # Save notification
         message = f" By {request.user.username}: {comment_text}"

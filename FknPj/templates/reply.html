@@ -77,7 +77,7 @@
 <form method="post" action="{% url 'FknAp:add_reply' post.id parent_comment.id %}" class="comment-form">
     {% csrf_token %}
     <div class="input-group">
-        <textarea class="form-control border-0" placeholder="Add a Reply" name="body" id="my-comment-reply" style="height: 2.5rem;" required minlength="20"></textarea>
+        <textarea class="form-control border-0" placeholder="Add a Reply" name="body" id="my-comment-reply" style="height: 2.5rem;" required minlength="1"></textarea>
         <div class="input-group-append ms-1">
             <button class="btn btn-link-light" type="submit">
                 <i class="far fa-paper-plane"></i>
