@@ -94,7 +94,7 @@
                     {% endif %}
                     <li class="col nav-item">
                         <a class="nav-link" {% if user.is_authenticated %} ondblclick="copyContent('{{ item.content_text|escapejs }}');" {% endif %}><i class="bi bi-files scrollLink"></i></a>
-                    </li>
+                    </li>                    
                     <!-- Connect the "Report" icon with the report confirmation modal -->
                     {% if customuser.username != item.creater.username %}
                     <li class="col nav-item">

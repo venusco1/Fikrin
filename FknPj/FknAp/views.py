@@ -32,7 +32,7 @@ def send_notification(registration_ids, message_title, message_desc, post_id):
         "notification": {
             "body": message_desc,
             "title": str(message_title) + ": ",
-            "click_action": "https://fikr.in/" 
+            "click_action": "fikr.in" 
 
         },
         "data": {
@@ -44,6 +44,8 @@ def send_notification(registration_ids, message_title, message_desc, post_id):
     print(result.json())
 
 
+
+
 @login_required
 def create_post(request):
     if request.method == 'POST':
@@ -51,9 +53,11 @@ def create_post(request):
 
         post = Post.objects.create(creater=request.user, content_text=content_text)
 
+        # Get the ID of the newly created post
         post_id = post.id
+
         try:
-            devices = FCMDevice.objectsNotification.filter(active=True)
+            devices = FCMDevice.objects.filter(active=True)
             registration_ids = [device.registration_id for device in devices]
 
             if registration_ids:
@@ -75,7 +79,6 @@ def create_post(request):
     return render(request, 'index.html', {'posts': posts})
 
 
-
 @csrf_exempt
 def edit_post(request, post_id):
     if request.method == 'POST':
@@ -84,7 +87,6 @@ def edit_post(request, post_id):
         post.content_text = text
         new_text = post.content_text
         post.edit_post(new_text=new_text)
-
         return redirect('Authentication:home')
 
     else:
@@ -109,18 +111,18 @@ def comments(request, post_id):
         if parent_comment_id:
             parent_comment = Comment.objects.get(id=parent_comment_id)
 
-        # Check if the post belongs to the user
-        if post.creater == request.user:
-            new_comment = Comment.objects.create(
-                post=post,
-                commenter=request.user,
-                comment_content=comment_text,
-                parent_comment=parent_comment,
-            )
+        # Check if the post belongs to the user 
+        new_comment = Comment.objects.create(
+            post=post,
+            commenter=request.user,
+            comment_content=comment_text,
+            parent_comment=parent_comment,
+        )
 
         # Save notification
-        message = f" By {request.user.username}: {comment_text}"
-        notification = Notification.objects.create(user=request.user, post=post, message=message)
+        if post.creater == request.user:
+            message = f" By {request.user.username}: {comment_text}"
+            notification = Notification.objects.create(user=request.user, post=post, message=message)
 
         try:
             devices = FCMDevice.objects.filter(active=True)
@@ -167,9 +169,9 @@ def add_reply(request, post_id, comment_id):
             parent_comment=parent_comment
         )
         
-        # Save notification
-        message = f" By {request.user.username}: {body}"
-        notification = Notification.objects.create(user=request.user, post=post, message=message)
+        if parent_comment.commenter == request.user:
+            message = f" By {request.user.username}: {body}"
+            notification = Notification.objects.create(user=request.user, post=post, message=message)
 
         try:
             devices = FCMDevice.objects.filter(active=True)

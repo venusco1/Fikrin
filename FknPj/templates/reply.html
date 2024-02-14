@@ -11,22 +11,22 @@
 {% endblock 'style' %}
 
 {% block 'content' %}
-<!-- header section -->
-<section>
-    <div class="container-fluid fixed-top" style="padding: 0;">
-      <header class="navbar flex-md-nowrap pe-0 shadow mb-0 pl-2 py-2" data-bs-theme="light" style="background-color: #000157;">  <!-- #000157 -->
-          <a class="navbar-brand fs-5 text-white px-3" href="{% url 'FknAp:comments' post.id %}">
-            <i class="bi bi-arrow-left px-2 fw-bold" style="display: block; width: 165px; height: 40px"><small class="fs-6 mx-2"><b>Replies to {{ parent_comment.commenter }}</b></small></i>
-          </a>
-      </header>
-    </div>
-    <div class="container bg-white fixed-top comment-shows" style="margin-top: 60px;">
-        <div class="content"><p class="text-gray-700 mt-2" id="content" style="white-space: pre-wrap;">{{ parent_comment.comment_content }}</p></div>
-            <button class="btn btn-sm btn-link text-decoration-none p-0 mt-2" onclick="toggleContent(this)" style="padding:0;">Read More</button>
-        <hr class="mx-2">
-    </div>
-</section>
 
+<div class="container-fluid" style="padding: 0;">
+    <header class="navbar flex-md-nowrap pe-0 shadow mb-0 pl-2 py-2" data-bs-theme="light" style="background-color: #000157;">
+        <a class="navbar-brand fs-5 text-white px-3" href="{% url 'FknAp:comments' post.id %}">
+            <i class="bi bi-arrow-left px-2 fw-bold" style="display: block; width: 165px; height: 40px"><small class="fs-6 mx-2"><b>Comments</b></small></i>
+        </a>
+    </header>
+</div>
+<div class="container-fluid pt-0 sticky-top" style="padding: 0;"> 
+    <div class="container pt-2 bg-white">
+        <div class="content">
+            <p class="text-gray-700 mt-2 mb-0" id="content" style="white-space: pre-wrap;">{{ parent_comment.comment_content }}</p>
+        </div>
+        <button class="btn btn-sm btn-link text-decoration-none p-0 mt-1 mb-2" onclick="toggleContent(this)" style="padding:0;">Read the post</button>
+    </div>
+</div>
 
 <div class="container" id="dynamicMarginContainer" style="margin-top:165px;">
     
