@@ -1,11 +1,8 @@
 import os
 from django.shortcuts import get_object_or_404, render, redirect
 from . models import *
-from django.core.validators import RegexValidator
-from django.core.exceptions import ValidationError
-from django.contrib import messages ,auth
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -32,7 +29,7 @@ def send_notification(registration_ids, message_title, message_desc, post_id):
         "notification": {
             "body": message_desc,
             "title": str(message_title) + ": ",
-            "click_action": "fikr.in" 
+            "click_action": "/" 
 
         },
         "data": {
@@ -42,7 +39,6 @@ def send_notification(registration_ids, message_title, message_desc, post_id):
 
     result = requests.post(url, data=json.dumps(payload), headers=headers)
     print(result.json())
-
 
 
 

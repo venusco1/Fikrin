@@ -141,89 +141,32 @@ LOGIN_URL = '/accounts/login/'# 1 hour (adjust as needed)
 
 
 
-
-
 # Define PWA settings
 PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js', 'serviceworker.js')
 
 PWA_APP_NAME = 'Fikrin'
-PWA_APP_SHORT_NAME = 'Fikrin'
 PWA_APP_DESCRIPTION = "🌟 Welcome to Fikrin, an innovative social platform that promises to redefine your reading experience and ignite your passion for literature. 📚✨"
-PWA_APP_THEME_COLOR = '#000157'
+PWA_APP_THEME_COLOR = '#ffffff'
 PWA_APP_BACKGROUND_COLOR = '#ffffff'
 PWA_APP_DISPLAY = 'standalone'
 PWA_APP_SCOPE = '/'
 PWA_APP_ORIENTATION = 'portrait'
 PWA_APP_START_URL = '/'
-PWA_APP_STATUS_BAR_COLOR = '#000157'
+PWA_APP_STATUS_BAR_COLOR = 'default'
 
 
 PWA_APP_ICONS = [
     {
-        'src': '/static/img/manifestico/72.png',
-        'sizes': '72x72'
-    },{
-        'src': '/static/img/manifestico/96.png',
-        'sizes': '96x96'
-    },{
-        'src': '/static/img/manifestico/128.png',
-        'sizes': '128x128'
-    },{
-        'src': '/static/img/manifestico/144.png',
-        'sizes': '144x144'
-    },{
-        'src': '/static/img/manifestico/152.png',
-        'sizes': '152x152'
-    },{
-        'src': '/static/img/manifestico/192.png',
-        'sizes': '192x192'
-    },{
-        'src': '/static/img/manifestico/256.png',
-        'sizes': '256x256'
-    },{
-        'src': '/static/img/manifestico/384.png',
-        'sizes': '384x384'
-    },{
-        'src': '/static/img/manifestico/512.png',
-        'sizes': '512x512'
-    },
+        'src': '/static/img/fkr.png',
+        'sizes': '160x160'
+    }
 ]
 PWA_APP_ICONS_APPLE = [
     {
-        'src': '/static/img/manifestico/72.png',
-        'sizes': '72x72'
-    },{
-        'src': '/static/img/manifestico/96.png',
-        'sizes': '96x96'
-    },{
-        'src': '/static/img/manifestico/128.png',
-        'sizes': '128x128'
-    },{
-        'src': '/static/img/manifestico/144.png',
-        'sizes': '144x144'
-    },{
-        'src': '/static/img/manifestico/152.png',
-        'sizes': '152x152'
-    },{
-        'src': '/static/img/manifestico/192.png',
-        'sizes': '192x192'
-    },{
-        'src': '/static/img/manifestico/256.png',
-        'sizes': '256x256'
-    },{
-        'src': '/static/img/manifestico/384.png',
-        'sizes': '384x384'
-    },{
-        'src': '/static/img/manifestico/512.png',
-        'sizes': '512x512'
-    },
+        'src': '/static/img/fkr.png',
+        'sizes': '160x160'
+    }
 ]
-
-PWA_APP_SPLASH_SCREEN = {
-    'enabled': True,
-     'image_path': '/static/img/fkr.png',
-    'background_color': '#ffffff',
-}
 
 PWA_APP_DIR = 'ltr'
 PWA_APP_LANG = 'en-US'
