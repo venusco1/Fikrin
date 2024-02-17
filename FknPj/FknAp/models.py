@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from  Authentication.models import CustomUser
 
+    
 class Post(models.Model):
     creater = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='posts')
     date_created = models.DateTimeField(default=timezone.now)
@@ -51,5 +52,6 @@ class Notification(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     message = models.CharField(max_length=90)
     timestamp = models.DateTimeField(auto_now_add=True)
+
 
 

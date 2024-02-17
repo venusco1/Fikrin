@@ -24,7 +24,7 @@ def home(request):
             return render(request, 'index.html', context)
         except ObjectDoesNotExist:
             pass
-
+                                                                                                                                                                                                                                
     return render(request, 'index.html', {'posts': posts})
 
 
@@ -81,10 +81,38 @@ def signup(request):
     return render(request, 'signup.html')
 
 
+
+def terms_and_conditions(request):
+    return render(request, 'terms.html')
+
+
+
+def signout(request):
+    auth.logout(request)
+    return redirect('Authentication:home')
+
+
+
 def profile(request):
     customuser = CustomUser.objects.get(username=request.user.username)
     context = {'customuser': customuser}
     return render(request, "profile.html", context)
+
+
+
+def gallery_view(request):
+    images = GalleryImage.objects.all()
+    return render(request, 'gallery.html', {'images': images})
+
+
+
+@login_required
+def set_profile_pic(request, image_id):
+    customuser = CustomUser.objects.get(username=request.user.username)
+    image = GalleryImage.objects.get(pk=image_id)
+    customuser.profile_pic = image.image
+    customuser.save()
+    return redirect('Authentication:home')
 
 
 def profile_cropping(request, user_id):
@@ -108,33 +136,6 @@ def profile_cropping(request, user_id):
 
 def about_us(request):
     return render(request,'about-us.html')
-
-
-def terms_and_conditions(request):
-    return render(request, 'terms.html')
-
-
-
-def signout(request):
-    auth.logout(request)
-    return redirect('Authentication:home')
-
-
-
-def gallery_view(request):
-    images = GalleryImage.objects.all()
-    return render(request, 'gallery.html', {'images': images})
-
-
-
-@login_required
-def set_profile_pic(request, image_id):
-    customuser = CustomUser.objects.get(username=request.user.username)
-    image = GalleryImage.objects.get(pk=image_id)
-    customuser.profile_pic = image.image
-    customuser.save()
-    return redirect('Authentication:home')
-
 
 
 @csrf_exempt
@@ -166,7 +167,3 @@ def save_token(request):
         return HttpResponseBadRequest(f'Missing field: {e}')
     except Exception as e:
         return HttpResponseServerError(f'Error processing request: {str(e)}')
-
-
-
-

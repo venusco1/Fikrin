@@ -10,7 +10,7 @@
 
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta name="theme-color" content="#000157">
         <!-- Favicon -->
         <link rel="shortcut icon" href="{% static 'img/fkrnICN.png' %}">
 
@@ -23,7 +23,14 @@
                 }, 0);
             };
         </script>
-
+        
+        <script>
+          // Function to handle notification click action
+          function handleNotificationClick() {
+              // Redirect the user to the desired page
+              window.location.href = "https://fikr.in/";
+          }
+      </script>
         {% block 'style' %}{% endblock 'style' %}
 
         <!-- CSS stylesheets -->
