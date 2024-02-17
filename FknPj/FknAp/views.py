@@ -232,7 +232,26 @@ def like_post(request, id):
             try:
                 post.likers.add(request.user)
                 post.save()
+
+                try:
+                    devices = FCMDevice.objects.filter(active=True)
+                    registration_ids = [device.registration_id for device in devices]
+
+                    if registration_ids:
+                        message_title = request.user
+                        message_desc = 'You have a new like on your post!'
+                        send_notification(registration_ids, message_title, message_desc, id)
+                        print('Notification sent to {} devices.'.format(len(registration_ids)))
+                    else:
+                        print('No active devices found for sending notifications.')
+
+                except ObjectDoesNotExist:
+                    print('An error occurred: FCMDevice model not found or misconfigured.')
+                except Exception as e:
+                    print('An error occurred:', str(e))
+
                 return HttpResponse(status=204)
+                
             except Exception as e:
                 return HttpResponse(e)
         else:
