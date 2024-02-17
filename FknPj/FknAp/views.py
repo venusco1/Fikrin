@@ -120,9 +120,9 @@ def comments(request, post_id):
         )
 
         # Save notification
-        if post.creater == request.user:
-            message = f" By {request.user.username}: {comment_text}"
-            notification = Notification.objects.create(user=request.user, post=post, message=message)
+
+        message = f" By {request.user.username}: {comment_text}"
+        notification = Notification.objects.create(user=request.user, post=post, message=message)
 
         try:
             devices = FCMDevice.objects.filter(active=True)
@@ -169,9 +169,9 @@ def add_reply(request, post_id, comment_id):
             parent_comment=parent_comment
         )
         
-        if parent_comment.commenter == request.user:
-            message = f" By {request.user.username}: {body}"
-            notification = Notification.objects.create(user=request.user, post=post, message=message)
+
+        message = f" By {request.user.username}: {body}"
+        notification = Notification.objects.create(user=request.user, post=post, message=message)
 
         try:
             devices = FCMDevice.objects.filter(active=True)
@@ -255,7 +255,7 @@ def unlike_post(request, id):
 
 
 def view_notifications(request):
-    user_notifications = Notification.objects.filter(user=request.user).order_by('-timestamp')
+    user_notifications = Notification.objects.filter(post__creater=request.user).order_by('-timestamp')
 
     context = {
         'notifications': user_notifications,
@@ -266,7 +266,7 @@ def view_notifications(request):
 
 
 def clear_notifications(request):
-    user_notifications = Notification.objects.filter(user=request.user).order_by('-timestamp')
+    user_notifications = Notification.objects.filter(post__creater=request.user).order_by('-timestamp')
     user_notifications.all().delete() 
     return redirect('Authentication:home')
 

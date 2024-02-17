@@ -10,6 +10,27 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <script src="{% static 'js/like.js' %}"></script>
+
+<script>
+    function copyContent(text) {
+        // Create a textarea element to hold the text temporarily
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+
+        // Select and copy the text from the textarea
+        textarea.select();
+        document.execCommand('copy');
+
+        // Remove the textarea element
+        document.body.removeChild(textarea);
+
+        // Optionally, provide some feedback to the user
+        alert('Content copied to clipboard!');
+    }
+</script>
+
+
 {% endblock 'style' %}
 
 {% block 'content' %}
@@ -93,8 +114,10 @@
                     </li>
                     {% endif %}
                     <li class="col nav-item">
-                        <a class="nav-link" {% if user.is_authenticated %} ondblclick="copyContent('{{ item.content_text|escapejs }}');" {% endif %}><i class="bi bi-files scrollLink"></i></a>
-                    </li>                    
+                        <a class="nav-link" {% if user.is_authenticated %} onclick="copyContent('{{ item.content_text|escapejs }}');" {% endif %}><i class="bi bi-files scrollLink"></i></a>
+                    </li>
+                    
+                                    
                     <!-- Connect the "Report" icon with the report confirmation modal -->
                     {% if customuser.username != item.creater.username %}
                     <li class="col nav-item">
@@ -200,6 +223,7 @@
 </div>
 {% endif %}
 
+{% include "footer.html" %}
 
 <script>
 // Display a confirmation message for reporting the 
@@ -207,9 +231,11 @@ document.getElementById('reportButton').addEventListener('click', function() {
     alert('Thanks for reporting!');
 });
 </script>
+
+
+
 <script src="{% static 'js/index.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 
 {% endblock 'content' %}
 

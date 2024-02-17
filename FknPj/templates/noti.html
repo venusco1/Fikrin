@@ -37,18 +37,23 @@
       </header>
   </section>
 
-<div class="container" style="padding-bottom: 95px; padding-top: 95px;">
-    <ul class="notification-list">
+  <div class="container" style="padding-bottom: 95px; padding-top: 95px;">
+    <div class="row">
         {% for notification in notifications %}
-        <a href="{% url 'FknAp:comments' notification.post.id %}#comment_{{ notification.id }}" class="text-decoration-none text-dark">
-            <li class="notification-item">
-                <div class="notification-message text-truncate fs-6">{{ notification.message }}</div>
-                <div class="notification-timestamp">{{ notification.timestamp }}</div>
-            </li>
-        </a>
+        <div class="col-md-6"> <!-- Adjust the column size as needed -->
+            <a href="{% url 'FknAp:comments' notification.post.id %}#comment_{{ notification.id }}" class="text-decoration-none text-dark">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h6 class="card-title text-truncate">{{ notification.message }}</h6>
+                        <small class="card-text notification-timestamp">{{ notification.timestamp }}</small>
+                    </div>
+                </div>
+            </a>
+        </div>
         {% endfor %}
-    </ul>
-</div> 
+    </div>
+</div>
+
 
 
 

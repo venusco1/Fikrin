@@ -83,15 +83,13 @@ scrollLinks.forEach(function(link) {
 });
 
 
-
-
-
 function copyContent(text) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textArea);
-    showCopyMessage();
+  navigator.clipboard.writeText(text)
+      .then(() => {
+          alert('Content copied successfully');
+      })
+      .catch((error) => {
+          console.error('Failed to copy content: ', error);
+          alert('Failed to copy content. Please try again.');
+      });
 }
