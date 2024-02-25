@@ -9,10 +9,37 @@ from Authentication.forms import ImageForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_http_methods
 import json
-from fcm_django.models import FCMDevice
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+import json
+from .models import FCMDevice
 
+@csrf_exempt
+@require_POST
+def save_token(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        token = data.get('token')
+
+        if not token:
+            return HttpResponseBadRequest(json.dumps({'error': 'Token is missing'}))
+
+        if FCMDevice.objects.filter(registration_id=token, active=True).exists():
+            return HttpResponseBadRequest(json.dumps({'error': 'The token already exists'}))
+
+        device = FCMDevice(registration_id=token, active=True)
+
+        # Only link the device to the user if they are authenticated
+        if request.user.is_authenticated:
+            device.user = request.user
+
+        device.save()
+
+        return JsonResponse({'message': 'Token saved successfully'})
+    except Exception as e:
+        return HttpResponseBadRequest(json.dumps({'error': str(e)}))
 
 
 def home(request):
@@ -24,6 +51,9 @@ def home(request):
             return render(request, 'index.html', context)
         except ObjectDoesNotExist:
             pass
+
+        # Call save_token function to save FCM token
+        save_token(request)
                                                                                                                                                                                                                                 
     return render(request, 'index.html', {'posts': posts})
 
@@ -68,7 +98,7 @@ def signup(request):
                 user = CustomUser.objects.create_user(username=username, password=password, mobile_number=mobile_number)
                 user.mobile_number = mobile_number
                 user.save()
-                user = auth.authenticate(username=username,password=password)
+                user = auth.authenticate(username=username, password=password)
 
                 if user is not None:
                     auth.login(request,user)
@@ -136,30 +166,4 @@ def profile_cropping(request, user_id):
 
 def about_us(request):
     return render(request,'about-us.html')
-
-
-
-@csrf_exempt
-@require_http_methods(['POST'])
-def save_token(request):
-
-    body_dict = json.loads(request.body.decode('utf-8'))
-    token = body_dict['token']
-    existe = FCMDevice.objects.filter(registration_id=token, active=True)
-
-    if len(existe) > 0:
-        return HttpResponseBadRequest(json.dumps ({ 'message': 'the token already exists'}))
-
-    divice = FCMDevice()
-    divice.registration_id = token
-    divice.active= True
-
-    #solo si el usuario esta autenticado procederemos a enlazarlo
-    if request.user.is_authenticated: divice.user = request.user
-
-    try:
-        divice.save()
-        return HttpResponse(json.dumps({ 'message': 'token guardado'}))
-    except:
-        return HttpResponseBadRequest(json.dumps({'message': 'no se ha podido guardar'}))
 

@@ -117,10 +117,6 @@ var CACHE_NAME = 'my-site-cache-v1';
 
 var urlsToCache = [
  '/',
- '/static/img/fkrnlogo.png',
- '/static/network/styles.css',
- '/static/network/custom.css',
-
 ];
 
 self.addEventListener('install', function(event) { // Perform install steps
@@ -171,14 +167,3 @@ firebase.initializeApp(firebaseConfig);
 
 // Get Firebase Messaging instance
 let messaging = firebase.messaging();
-
-// messaging.setBackgroundMessageHandler(function (payload) {
-
-//     let title = 'Fikrin Notification';
-//     let options = {
-//         body: 'This is the notification section',
-//         icon: '/static/img/fkrnICN.png'
-//     }
-    
-//     self.registration.showNotification (title, options);
-//     });

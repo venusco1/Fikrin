@@ -115,12 +115,11 @@
                         <a class="nav-link" {% if user.is_authenticated %} onclick="copyContent('{{ item.content_text|escapejs }}');" {% endif %}><i class="bi bi-files scrollLink"></i></a>
                     </li>
                     
-                                    
                     <!-- Connect the "Report" icon with the report confirmation modal -->
                     {% if customuser.username != item.creater.username %}
                     <li class="col nav-item">
                         <a class="nav-link" data-bs-toggle="modal" data-bs-target="#reportConfirmationModal{{ item.id }}">
-                            <i class="bi bi-flag-fill text-danger"></i>
+                            <i class="bi bi-flag text-danger"></i>
                         </a>
                     </li>
                     {% endif %}
