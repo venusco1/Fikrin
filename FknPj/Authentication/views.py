@@ -9,12 +9,14 @@ from Authentication.forms import ImageForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_http_methods
 import json
+from fcm_django.models import FCMDevice
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponseBadRequest, HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import json
-from .models import FCMDevice
+# from .models import FCMDevice
 
 @csrf_exempt
 @require_POST
@@ -42,6 +44,7 @@ def save_token(request):
         return HttpResponseBadRequest(json.dumps({'error': str(e)}))
 
 
+
 def home(request):
     posts = Post.objects.all().order_by('-date_created')
     if request.user.is_authenticated:
@@ -53,7 +56,7 @@ def home(request):
             pass
 
         # Call save_token function to save FCM token
-        save_token(request)
+        save_token()
                                                                                                                                                                                                                                 
     return render(request, 'index.html', {'posts': posts})
 
