@@ -32,7 +32,7 @@ def send_notification(registration_ids, message_title, message_desc, post_id):
         "notification": {
             "body": message_desc,
             "title": str(message_title) + ": ",
-            "click_action": "fikr.in" 
+            "click_action": "/" 
 
         },
         "data": {
@@ -120,28 +120,11 @@ def comments(request, post_id):
         )
 
         # Save notification
-
         message = f" By {request.user.username}: {comment_text}"
         notification = Notification.objects.create(user=request.user, post=post, message=message)
 
-        try:
-            devices = FCMDevice.objects.filter(active=True)
-            registration_ids = [device.registration_id for device in devices]
-
-            if registration_ids:
-                message_title = request.user
-                message_desc = 'You have a new comment on your post'
-                send_notification(registration_ids, message_title, message_desc, post_id)
-                print('Notification sent to {} devices.'.format(len(registration_ids)))
-            else:
-                print('No active devices found for sending notifications.')
-
-        except ObjectDoesNotExist:
-            print('An error occurred: FCMDevice model not found or misconfigured.')
-        except Exception as e:
-            print('An error occurred:', str(e))
-
         return redirect('FknAp:comments', post_id)
+    
     else:
         comments = Comment.objects.filter(post=post, parent_comment=None)
         customuser = CustomUser.objects.get(username=request.user.username)
@@ -172,23 +155,6 @@ def add_reply(request, post_id, comment_id):
 
         message = f" By {request.user.username}: {body}"
         notification = Notification.objects.create(user=request.user, post=post, message=message)
-
-        try:
-            devices = FCMDevice.objects.filter(active=True)
-            registration_ids = [device.registration_id for device in devices]
-
-            if registration_ids:
-                message_title = request.user
-                message_desc = 'You have a new reply on your post'
-                send_notification(registration_ids, message_title, message_desc, post_id)
-                print('Notification sent to {} devices.'.format(len(registration_ids)))
-            else:
-                print('No active devices found for sending notifications.')
-
-        except ObjectDoesNotExist:
-            print('An error occurred: FCMDevice model not found or misconfigured.')
-        except Exception as e:
-            print('An error occurred:', str(e))
 
         return redirect('FknAp:comments', post_id)
 
