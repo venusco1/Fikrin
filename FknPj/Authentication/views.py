@@ -5,13 +5,13 @@ from . models import *
 from FknAp.models import Post
 from django.contrib import messages ,auth
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, HttpResponseBadRequest, HttpResponseServerError
 from Authentication.forms import ImageForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_http_methods
 import json
 from fcm_django.models import FCMDevice
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseBadRequest
 
 
 
@@ -138,32 +138,28 @@ def about_us(request):
     return render(request,'about-us.html')
 
 
+
 @csrf_exempt
 @require_http_methods(['POST'])
 def save_token(request):
+
+    body_dict = json.loads(request.body.decode('utf-8'))
+    token = body_dict['token']
+    existe = FCMDevice.objects.filter(registration_id=token, active=True)
+
+    if len(existe) > 0:
+        return HttpResponseBadRequest(json.dumps ({ 'message': 'the token already exists'}))
+
+    divice = FCMDevice()
+    divice.registration_id = token
+    divice.active= True
+
+    #solo si el usuario esta autenticado procederemos a enlazarlo
+    if request.user.is_authenticated: divice.user = request.user
+
     try:
-        body_dict = json.loads(request.body.decode('utf-8'))
-        token = body_dict.get('token')
-        
-        
-        if token:
-            existe = FCMDevice.objects.filter(registration_id=token, active=True)
+        divice.save()
+        return HttpResponse(json.dumps({ 'message': 'token guardado'}))
+    except:
+        return HttpResponseBadRequest(json.dumps({'message': 'no se ha podido guardar'}))
 
-            if existe.exists():
-                return JsonResponse({'message': 'The token already exists'}, status=400)
-            
-            device = FCMDevice(registration_id=token, active=True)
-            if request.user.is_authenticated:
-                device.user = request.user
-
-            device.save()
-            return JsonResponse({'message': 'Token saved successfully'})
-        else:
-            return HttpResponseBadRequest('Token not provided')
-
-    except json.JSONDecodeError:
-        return HttpResponseBadRequest('Invalid JSON format in request body')
-    except KeyError as e:
-        return HttpResponseBadRequest(f'Missing field: {e}')
-    except Exception as e:
-        return HttpResponseServerError(f'Error processing request: {str(e)}')

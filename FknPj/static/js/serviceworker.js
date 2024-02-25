@@ -1,4 +1,4 @@
-const staticCacheName = 'site-static-1';
+/* const staticCacheName = 'site-static-1';
 const dynamicCacheName = 'site-dynamic-1';
 const assets = [
     '/',
@@ -109,3 +109,76 @@ firebase.initializeApp(firebaseConfig);
 // Get Firebase Messaging instance
 let messaging = firebase.messaging();
 
+ */
+
+
+
+var CACHE_NAME = 'my-site-cache-v1';
+
+var urlsToCache = [
+ '/',
+ '/static/img/fkrnlogo.png',
+ '/static/network/styles.css',
+ '/static/network/custom.css',
+
+];
+
+self.addEventListener('install', function(event) { // Perform install steps
+    event.waitUntil(
+        caches.open(CACHE_NAME) .then(function(cache) {
+            console.log('Opened cache'); 
+            return cache.addAll(urlsToCache);
+        })
+    );
+});
+
+self.addEventListener('fetch', function(event) {
+    event.respondWith(
+        fetch(event.request)
+        .then(function(result) { 
+            return caches.open(CACHE_NAME)
+            .then(function(c){
+                c.put(event.request.url, result.clone());
+                return result;
+            })
+        })
+
+        .catch(function(e){
+            return caches.match(event.request)
+        })
+    );
+});
+
+
+// codigo para notificaciones push
+
+importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js") ;
+importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js") ;
+importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js") ; 
+
+var firebaseConfig = {
+  apiKey: "AIzaSyDkyNO4aWT4qVCVJwkcb354_Rtc-TdFybk",
+  authDomain: "fknpj-9c7bb.firebaseapp.com",
+  projectId: "fknpj-9c7bb",
+  storageBucket: "fknpj-9c7bb.appspot.com",
+  messagingSenderId: "624374608791",
+  appId: "1:624374608791:web:143bdac26d9762dcbb0ad2",
+  measurementId: "G-93ZXLVMBCF"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Get Firebase Messaging instance
+let messaging = firebase.messaging();
+
+// messaging.setBackgroundMessageHandler(function (payload) {
+
+//     let title = 'Fikrin Notification';
+//     let options = {
+//         body: 'This is the notification section',
+//         icon: '/static/img/fkrnICN.png'
+//     }
+    
+//     self.registration.showNotification (title, options);
+//     });

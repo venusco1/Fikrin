@@ -88,16 +88,16 @@
   
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  
+
   // Get Firebase Messaging instance
   let messaging = firebase.messaging();
-  
+
   // First, we need to link the service worker.
   navigator.serviceWorker
   .register('./serviceworker.js') 
   .then(function(register) {
   messaging.useServiceWorker(register);
-  
+
   // Request permission from the user to receive notifications
   messaging.requestPermission()
   .then(function() {
@@ -105,37 +105,39 @@
     return messaging.getToken();
   })
   .then(function(token){
-    console.log("This is the tocken: " + token );
+    console.log(token);
+
   //we will send the token to django to save it in the database
-  
-    fetch('/save-token/', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-        'token': token
-        })
+
+  fetch('save-token/', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',    
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      'token': token
     })
-  
-    .then(function(response) {
-        if (response.ok) {
-            console.log("Token has been saved");
-        } else {
-            console.log("Failed to save token. Status: " + response.status);
-        }
+  })
+    
+  .then(function(response) {
+    if (response.ok) {
+        console.log("Token has been saved");
+    } else {
+        console.log("Failed to save token. Status: " + response.status);
+    }
+  })
+
+  .catch(function(e){
+    console.log("token could not be saved") 
     })
-  
-    .catch(function(e){
-        console.log("token could not be saved") 
-        })
-  
+
   })
   .catch(function(e) {
     console.log("The user has not accepted.");
   });
   });
+
   
   </script>
 
