@@ -40,7 +40,7 @@
   <div class="container" style="padding-bottom: 95px; padding-top: 95px;">
     <div class="row">
         {% for notification in notifications %}
-        <div class="col-md-6"> <!-- Adjust the column size as needed -->
+        <div class="col-md-6"> 
             <a href="{% url 'FknAp:comments' notification.post.id %}#comment_{{ notification.id }}" class="text-decoration-none text-dark">
                 <div class="card mb-2">
                     <div class="card-body">
