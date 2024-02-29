@@ -134,7 +134,7 @@ def comments(request, post_id):
             'customuser': customuser,
         }
     
-        return render(request, 'comments.html', context)
+        return render(request, 'comments_copy.html', context)
 
 
 def add_reply(request, post_id, comment_id):
@@ -166,7 +166,7 @@ def add_reply(request, post_id, comment_id):
         'customuser': customuser,
         'parent_comment': parent_comment
     }
-    return render(request, 'reply.html', context)
+    return render(request, 'reply_copy.html', context)
 
 
 
@@ -184,7 +184,7 @@ def delete_comment(request, post_id, comment_id):
             'customuser': customuser
         }
 
-        return render(request, 'comments.html', context)
+        return render(request, 'comments_copy.html', context)
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
 

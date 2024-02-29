@@ -22,16 +22,13 @@
           <ul class="navbar-nav flex-row d-md-none">
             <li class="nav-item text-nowrap">
                 {% if user.is_authenticated %}
-                <a href="{% url 'FknAp:clear_notifications' %}" class="nav-link px-3">
-                    <i type="button" class="bi bi-trash3 position-relative text-light">
-                        <span class="position-absolute top-50 ms-1 start-100 translate-middle badge rounded-pill"></span>
-                    </i> {% endif %}
+                <a href="#" class="nav-link px-3" data-bs-toggle="modal" data-bs-target="#confirmationModal">
+                    <i type="button" class="bi bi-trash3 position-relative text-light"></i>
                 </a>
+                {% endif %}
             </li>
-            <li class="nav-item text-nowrap">
-                <button class="nav-link px-3 text-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="bi bi-list text-light"></i>
-                </button>
+              
+            <li class="nav-item text-nowrap mx-2">
             </li>
         </ul>
       </header>
@@ -54,6 +51,24 @@
     </div>
 </div>
 
+
+
+<!-- Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-light border border-primary">
+      <div class="modal-body text-dark">
+        <p><small>Are you sure you want to clear notifications?</small></p>
+      </div>
+      <div class="modal-footer border-0 mt-0 pt-0">
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="{% url 'FknAp:clear_notifications' %}" class="btn btn-sm btn-primary">Confirm</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
 {% endblock 'content' %}
 
 

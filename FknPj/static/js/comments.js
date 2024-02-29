@@ -22,7 +22,7 @@
       var words = contentDiv.textContent.trim().split(/\s+/).length;
       var button = contentDiv.nextElementSibling;
 
-      if (words > 25) {
+      if (words > 15) {
         contentDiv.style.overflow = "hidden";
         contentDiv.style.height = "55px"; // Adjust this value to match initial height
         button.style.display = "inline-block";
@@ -33,4 +33,9 @@
   });
 
 
-  
+  function togglePopup() {
+    var popup = document.getElementById("popupContainer");
+    popup.classList.toggle("show-popup");
+    // Toggle body overflow
+    document.body.classList.toggle("hide-overflow");
+}

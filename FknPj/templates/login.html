@@ -9,9 +9,23 @@
 {% endblock 'style' %}
 
 {% block 'content' %}
-<div>
+
+<div class="container-fluid sticky-top w-100 mx-0 p-0">
+	<header class="navbar flex-md-nowrap p-0 shadow mb-0 justify-content-center" data-bs-theme="light" style="background-color: #000157;"> 
+		<a class="navbar-brand fs-6 text-white" href="{% url 'Authentication:home' %}">
+			<img src="{% static 'img/fkrnlogo.png' %}" style="width: 105px; height: 60px" alt="Logo">
+		</a>
+	</header>
+
+	<div class="alert alert-info alert-dismissible fade show mb-0 shadow-sm" role="alert" style="background-color: #e6f7ff; color: #004085; border-color: #b8daff;">
+	<small>If you haven't registered yet, please</small>  
+		<a class="ms-1" href="{% url 'Authentication:signup' %}" style="text-decoration: none; color: #0056b3;"><small class="mx-0 px-0">Signup</small></a>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+	</div>
+</div>
+
 <div class="w-full sm:max-w-lg sm:mx-auto">
-	<article class="overflow-hidden rounded shadow my-4">
+	<article class="overflow-hidden">
 		<div class="sm:flex sm:flex-wrap">
 			<div class="screen">
 				<div class="screen__content">
@@ -31,12 +45,6 @@
 							<i class="button__icon fas fa-chevron-right"></i>
 						</button>             
 					</form>
-					<div class="social-login pt-3">
-						<h5 class="text-break">Welcome<br>to Fikrin</h5>
-						<div class="social-icons">
-							<a href="{% url 'Authentication:signup' %}" class="social-login__icon fab">Sign Up</a>
-						</div>
-					</div>
 				</div>
 				<div class="screen__background">
 					<span class="screen__background__shape screen__background__shape4"></span>
@@ -48,6 +56,8 @@
 		</div>
 	</article>
 </div>
+
+{% include "footer.html" %}
 
 {% endblock 'content' %}
 

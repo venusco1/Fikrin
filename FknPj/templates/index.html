@@ -213,21 +213,21 @@
 </div>
 {% endif %}
 
-{% comment %} {% if user.is_authenticated %}
+{% if user.is_authenticated %}
 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000" id="infoToast"
  style="width: fit-content;">
     <div class="toast-body"> Content is copied! </div>
 </div>
-{% endif %} {% endcomment %}
+{% endif %}
 
 
 
-<script>
+{% comment %} <script>
 // Display a confirmation message for reporting the 
 document.getElementById('reportButton').addEventListener('click', function() {
     alert('Thanks for reporting!');
 });
-</script>
+</script> {% endcomment %}
 
 
 

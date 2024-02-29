@@ -37,7 +37,7 @@
     </a>
     
     <a class="view-more" href="">
-      <div class="popup"></div>
+
     </a>
     <div class="mid-section pt-0 mt-4">
       <div class="name">{{ customuser.username }}</div>
@@ -45,10 +45,8 @@
       <div class="line"></div>
       <div class="stats">
         
-        <a class="" href="{% url 'Authentication:signout' %}">
-        <div class="stat mt-5"> 
-          <button class="btn btn-primary" style="background-color: #020481; border: 0;">Sign Out</button>
-        </div>  </a>
+        <a href="{% url 'Authentication:signout' %}" class="text-decoration-none mt-5 text-danger">Sign Out</a>
+        
       </div>
     </div>
 

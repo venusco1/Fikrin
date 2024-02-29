@@ -1,30 +1,106 @@
 
 body {
-    background-color: #f8f9fa;
-  }
+  position: relative;
+  min-height: 100vh;
+  margin: 0;
+  padding-bottom: 50px; 
+  font-family: Arial, sans-serif; 
+}
   
-  .comments-container {
-    max-height: 100%;
-    overflow-y: auto;
-    margin-bottom: 70px; /* Adjusted margin for the new comment form */
-  }
-  
-  .comment-card {
-    margin-bottom: 15px;
-  }
-  
-  .fixed-textarea {
-    border-radius: 0;
-    box-shadow: 0px -3px 6px -4px rgba(0, 0, 0, 0.15); /* Creating a subtle shadow at the bottom */
-  }
-  
-  .comment-form {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px;
-    background-color: #fff;
-    border-top: 1px solid #ddd;
-  }
+.comments-container {
+  max-height: 100%;
+  overflow-y: auto;
+  margin-bottom: 20px; 
+}
+
+.comment-card {
+  margin-bottom: 15px;
+}
+
+.icon-container {
+  position: fixed;
+  bottom: 20px; 
+  right: 20px; 
+  z-index: 1000;
+  cursor: pointer;
+}
+/* Adjust the icon size and color */
+.icon-container i {
+  font-size: 30px; /* Adjust size */
+  color: #000157; /* Adjust color */
+}
+/* Popup container */
+.popup-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff; /* Change background color */
+  border-top: 1px solid #494949; /* Add border */
+  padding: 20px;
+  box-sizing: border-box;
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(100%);
+  z-index: 9998; /* Ensure it's above other content */
+}
+/* Show the popup */
+.show-popup {
+  transform: translateY(0);
+}
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000157;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  color: #000157;
+  transition: background-color 0.3s ease;
+}
+
+
+/* Initially hide the icon */
+#iconContainer {
+  display: block;
+}
+
+/* Show the icon when the popup is open */
+.popup-open #iconContainer {
+  display: none;
+}
+
+.form-label {
+  max-height: 6em; /* Limiting to 3 lines */
+  overflow-y: auto; /* Adding vertical scrollbar when content exceeds 3 lines */
+  display: block; /* Ensuring it's displayed as a block element */
+}
+
+/* Assuming Font Awesome is included in your project */
+.submit-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #000157;
+}
+
+.comment-button {
+  margin-top: 10px; /* Adjust margin-top as needed */
+}
+
+/* Adjust icon size and margin */
+.fa-paper-plane {
+  margin-right: 5px; /* Adjust as needed */
+  font-size: 18px; /* Adjust icon size as needed */
+}
+
 

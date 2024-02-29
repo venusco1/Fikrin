@@ -83,13 +83,13 @@ scrollLinks.forEach(function(link) {
 });
 
 
-function copyContent(text) {
-  navigator.clipboard.writeText(text)
-      .then(() => {
-          alert('Content copied successfully');
-      })
-      .catch((error) => {
-          console.error('Failed to copy content: ', error);
-          alert('Failed to copy content. Please try again.');
-      });
-}
+// function copyContent(text) {
+//   navigator.clipboard.writeText(text)
+//       .then(() => {
+//           alert('Content copied successfully');
+//       })
+//       .catch((error) => {
+//           console.error('Failed to copy content: ', error);
+//           alert('Failed to copy content. Please try again.');
+//       });
+// }
