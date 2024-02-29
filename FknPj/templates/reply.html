@@ -2,11 +2,10 @@
 
 {% load static %}
 
-{% block 'title' %}reply{% endblock 'title' %}
+{% block 'title' %}comments{% endblock 'title' %}
 
-{% block 'style' %}
-
-<link rel="stylesheet" href="{% static 'css/comment-styles.css' %}">
+{% block 'style' %} <link rel="stylesheet" href="{% static 'css/comment-styles.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
 
 {% endblock 'style' %}
 
@@ -19,21 +18,21 @@
         </a>
     </header>
 </div>
-<div class="container-fluid pt-0 sticky-top" style="padding: 0;"> 
+<div class="container-fluid pt-0 sticky-top" style="padding: 0;">
     <div class="container pt-2 bg-white">
         <div class="content">
             <p class="text-gray-700 mt-2 mb-0" id="content" style="white-space: pre-wrap;">{{ parent_comment.comment_content }}</p>
         </div>
-        <button class="btn btn-sm btn-link text-decoration-none p-0 mt-1 mb-2" onclick="toggleContent(this)" style="padding:0;">Read the post</button>
+        <button class="btn btn-sm btn-link text-decoration-none p-0 mt-1 mb-2" onclick="toggleContent(this)" style="padding:0;">Read more</button>
     </div>
 </div>
+<hr style="margin-top: 5px; margin-bottom: 5px;">
 
-<div class="container mt-3" id="dynamicMarginContainer">
-    
-   <!-- Comments Section -->
-    <div class="comments-container"> 
-       <!-- Display existing comments -->
-       {% for reply in parent_comment.replies.all %}
+<div class="container mt-3">
+    <!-- Comments Section -->
+    <div class="comments-container">
+        <!-- Display existing comments -->
+        {% for reply in parent_comment.replies.all %}
 
        <div class="card comment-card">
            <div class="card-body">
@@ -71,38 +70,40 @@
 
        {% endfor %}
     </div>
-
-
-<!-- New Reply Form -->
-<form method="post" action="{% url 'FknAp:add_reply' post.id parent_comment.id %}" class="comment-form">
-    {% csrf_token %}
-    <div class="input-group">
-        <textarea class="form-control border-0" placeholder="Add a Reply" name="body" id="my-comment-reply" style="height: 2.5rem;" required minlength="1"></textarea>
-        <div class="input-group-append ms-1">
-            <button class="btn btn-link-light" type="submit">
-                <i class="far fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
-  </form>
-
 </div>
 
-{% comment %} <script>
-    // Run this script after the page has loaded
-    document.addEventListener("DOMContentLoaded", function() {
-        // Get the height of the fixed-top section
-        var fixedTopHeight = document.querySelector('.comment-shows').offsetHeight;
+<div class="icon-container" onclick="togglePopup()" id="iconContainer">
+    <!-- Your icon -->
+    <i class="bi bi-chat-text-fill"></i>
+</div>
 
-        // Set the margin-top for the second container with a smaller negative value
-        document.getElementById('dynamicMarginContainer').style.marginTop = fixedTopHeight + 'px';
-    });
-</script> {% endcomment %}
+<!-- Popup container -->
+<div class="popup-container" id="popupContainer">
+    <!-- Close button -->
+    <nav class="navbar">
+        <span class="close-btn" onclick="togglePopup()">&times;</span>
+      </nav>
+      
+    <!-- Popup content (e.g., form to add comments) -->
+    <form method="post" action="{% url 'FknAp:add_reply' post.id parent_comment.id %}" class="comment-form">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="commentInput" class="form-label comment-label">{{ parent_comment.comment_content }}</label>
+
+            <textarea class="form-control mt-3 border-1" name="body" id="my-comment-reply" rows="2" required minlength="3"></textarea>
+        </div>
+        <!-- Hide the comment button when popup is open --> Submit your reply
+        <button type="submit" class="btn btn-link submit-button">
+            <i class="fas fa-paper-plane" style="color: #000157;"></i> 
+          </button>
+          
+    </form>
+</div>
+
+
 
 
 <script src="{% static 'js/comments.js' %}"></script>
-
 {% endblock 'content' %}
-
 
 
