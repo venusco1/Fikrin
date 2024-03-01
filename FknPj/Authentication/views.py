@@ -47,7 +47,6 @@ def save_token(request):
 
 def home(request):
     posts = Post.objects.all().order_by('-date_created')
-    save_token()
     if request.user.is_authenticated:
         try:
             customuser = CustomUser.objects.get(username=request.user.username)
