@@ -47,16 +47,15 @@ def save_token(request):
 
 def home(request):
     posts = Post.objects.all().order_by('-date_created')
+    save_token()
     if request.user.is_authenticated:
         try:
             customuser = CustomUser.objects.get(username=request.user.username)
             context = {'customuser': customuser, 'posts': posts}
+            save_token(request)
             return render(request, 'index.html', context)
         except ObjectDoesNotExist:
-            pass
-
-        # Call save_token function to save FCM token
-        save_token()
+            pass  
                                                                                                                                                                                                                                 
     return render(request, 'index.html', {'posts': posts})
 
