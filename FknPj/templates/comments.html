@@ -4,20 +4,20 @@
 
 {% block 'title' %}comments{% endblock 'title' %}
 
-{% block 'style' %} <link rel="stylesheet" href="{% static 'css/comment-styles.css' %}">
-
+{% block 'style' %}
+<link rel="stylesheet" href="{% static 'css/comment-styles.css' %}">
 {% endblock 'style' %}
 
 {% block 'content' %}
 
-<div class="container-fluid" style="padding: 0;">
+<div class="container-fluid fixed-top" style="padding: 0;">
     <header class="navbar flex-md-nowrap pe-0 shadow mb-0 pl-2 py-2" data-bs-theme="light" style="background-color: #000157;">
         <a class="navbar-brand fs-5 text-white px-3" href="{% url 'Authentication:home' %}">
             <i class="bi bi-arrow-left px-2 fw-bold" style="display: block; width: 165px; height: 40px"><small class="fs-6 mx-2"><b>Comments</b></small></i>
         </a>
     </header>
 </div>
-<div class="container-fluid pt-0 sticky-top" style="padding: 0;">
+<div class="container-fluid pt-0" style="padding: 0; margin-top:60px;">
     <div class="container pt-2 bg-white">
         <div class="content">
             <p class="text-gray-700 mt-2 mb-0" id="content" style="white-space: pre-wrap;">{{ post.content_text }}</p>
@@ -26,6 +26,7 @@
     </div>
 </div>
 <hr style="margin-top: 5px; margin-bottom: 5px;">
+
 
 <div class="container mt-3">
     <!-- Comments Section -->
@@ -38,11 +39,11 @@
                     {% if cmt.commenter.profile_pic.url %}
                         <img src="{{ cmt.commenter.profile_pic.url }}" alt="Profile Picture" style="width: 30px; height: 30px; border-radius: 50%;">
                     {% else %}
-                        <img src="{% static 'img/placeholder.png' %}" alt="Default Profile Picture" style="width: 30px; height: 30px; border-radius: 50%;">
+                        <img src="{% static 'img/profile_avatar.png' %}" alt="Default Profile Picture" style="width: 30px; height: 30px; border-radius: 50%;">
                     {% endif %}
                     <small>{{ cmt.commenter }}</small>
-                </h5>
-                                <div class="content">
+                </h5>                
+                <div class="content">
                     <p class="text-gray-700 mt-2 mb-0" id="content" style="white-space: pre-wrap;">{{ cmt.comment_content }}</p>
                 </div>
                 <button class="btn btn-sm btn-link text-decoration-none p-0 mt-2" onclick="toggleContent(this)">Read More</button>
@@ -73,35 +74,20 @@
     </div>
 </div>
 
-<div class="icon-container" onclick="togglePopup()" id="iconContainer">
-    <!-- Your icon -->
-    <i class="bi bi-chat-text-fill"></i>
-</div>
-
-<!-- Popup container -->
-<div class="popup-container" id="popupContainer">
-    <!-- Close button -->
-    <nav class="navbar">
-        <span class="close-btn" onclick="togglePopup()">&times;</span>
-      </nav>
-      
-    <!-- Popup content (e.g., form to add comments) -->
-    <form method="post" action="{% url 'FknAp:comments' post.id %}" class="comment-form">
+<div class="container mt-3 m-0 p-0">
+    <form method="post" action="{% url 'FknAp:comments' post.id %}" class="comment-form" style="position: fixed; bottom: 0; width: 100%; background-color: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1);">
         {% csrf_token %}
-        <div class="mb-3">
-            <label for="commentInput" class="form-label comment-label">{{ post.content_text }}</label>
-
-            <textarea class="form-control mt-3 border-1" rows="3" name="comment_text" id="my-comment-reply" required minlength="1"></textarea>
+        <div class="input-group">
+            <textarea class="form-control border-0" placeholder="Add a comment" name="comment_text" id="my-comment-reply" style="height: 2.5rem;" required minlength="1"></textarea>
+            <div class="input-group-append ms-1">
+                <button class="btn btn-link-light" type="submit">
+                    <i class="far fa-paper-plane"></i> 
+                </button>
+            </div>
         </div>
-        <!-- Hide the comment button when popup is open --> Submit your comment
-        <button type="submit" class="btn btn-link submit-button">
-            <i class="fas fa-paper-plane" style="color: #000157;"></i> 
-          </button>
-          
     </form>
 </div>
 
 
 <script src="{% static 'js/comments.js' %}"></script>
 {% endblock 'content' %}
-

@@ -31,11 +31,3 @@
       }
     });
   });
-
-
-  function togglePopup() {
-    var popup = document.getElementById("popupContainer");
-    popup.classList.toggle("show-popup");
-    // Toggle body overflow
-    document.body.classList.toggle("hide-overflow");
-}
