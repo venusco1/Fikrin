@@ -38,7 +38,12 @@
 
        <div class="card comment-card">
            <div class="card-body">
-               <h5 class="card-title text-primary-emphasis"><i class="bi bi-person-circle mx-2"></i><small>{{ reply.commenter.username }}</small></h5>
+               <h5 class="card-title text-primary-emphasis">{% if reply.commenter.profile_pic.url %}
+                <img src="{{ reply.commenter.profile_pic.url }}" alt="Profile Picture" style="width: 30px; height: 30px; border-radius: 50%;">
+            {% else %}
+                <img src="{% static 'img/profile_avatar.png' %}" alt="Default Profile Picture" style="width: 30px; height: 30px; border-radius: 50%;">
+            {% endif %}
+            <small>{{ reply.commenter.username }}</small></h5>
             <div class="content">
                 <p class="text-gray-700 mt-2 mb-0" id="content" style="white-space: pre-wrap;">{{ reply.comment_content }}</p>
             </div>
