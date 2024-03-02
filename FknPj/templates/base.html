@@ -43,6 +43,7 @@
         <!-- css Icons  -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+        
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
 
@@ -96,6 +97,7 @@
   // Get Firebase Messaging instance
   let messaging = firebase.messaging();
 
+  
   // First, we need to link the service worker.
   navigator.serviceWorker
   .register('./serviceworker.js') 

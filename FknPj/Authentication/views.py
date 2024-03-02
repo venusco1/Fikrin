@@ -18,6 +18,10 @@ from django.views.decorators.http import require_POST
 import json
 # from .models import FCMDevice
 
+
+# views.py
+from django.http import JsonResponse
+
 @csrf_exempt
 @require_POST
 def save_token(request):
