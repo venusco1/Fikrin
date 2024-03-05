@@ -38,7 +38,7 @@
 
        <div class="card comment-card">
            <div class="card-body">
-               <h5 class="card-title text-primary-emphasis">{% if reply.commenter.profile_pic.url %}
+               <h5 class="card-title text-primary-emphasis">{% if reply.commenter.profile_pic %}
                 <img src="{{ reply.commenter.profile_pic.url }}" alt="Profile Picture" style="width: 30px; height: 30px; border-radius: 50%;">
             {% else %}
                 <img src="{% static 'img/profile_avatar.png' %}" alt="Default Profile Picture" style="width: 30px; height: 30px; border-radius: 50%;">

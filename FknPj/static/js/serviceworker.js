@@ -1,4 +1,3 @@
-
 var CACHE_NAME = 'my-site-cache-v1';
 
 var urlsToCache = [
@@ -33,13 +32,11 @@ self.addEventListener('fetch', function(event) {
 });
 
 
-// codigo para notificaciones push
-
 importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js") ;
 importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js") ;
 importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js") ; 
 
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyDkyNO4aWT4qVCVJwkcb354_Rtc-TdFybk",
   authDomain: "fknpj-9c7bb.firebaseapp.com",
   projectId: "fknpj-9c7bb",
@@ -49,8 +46,18 @@ var firebaseConfig = {
   measurementId: "G-93ZXLVMBCF"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
 
-// Get Firebase Messaging instance
-let messaging = firebase.messaging();
+firebase.initializeApp(firebaseConfig);   // Initialize Firebase
+let messaging = firebase.messaging();   // Get Firebase Messaging instance
+
+    messaging.setBackgroundMessageHandler(function (payload){
+        let title = "from  Fikrin";
+        let option = {
+            body : 'YOu have a notification',
+            icon : '/static/img/fikr.png'
+        }
+
+        self.ServiceWorkerRegistration.showNotifications(title, option)
+    });
+
+
