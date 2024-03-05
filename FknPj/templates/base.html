@@ -90,65 +90,49 @@
   let messaging = firebase.messaging();   // Get Firebase Messaging instance
 
   
-  // First, we need to link the service worker.
-  navigator.serviceWorker
-  .register('./serviceworker.js') 
+// First, we need to link the service worker.
+navigator.serviceWorker.register('./serviceworker.js')
   .then(function(register) {
+    messaging.useServiceWorker(register);
 
-      messaging.useServiceWorker(register);
-      messaging.requestPermission() // Request permission from the user to receive notifications
-      
+    // Request permission from the user to receive notifications
+    messaging.requestPermission()
       .then(function() {
         console.log("The user has accepted to receive notifications.");
         return messaging.getToken();
       })
       .then(function(token){
         console.log(token);
+
+        // Send the token to Django to save it in the database
+        fetch('save-token/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            'token': token
+          })
+        })
+        .then(function(response) {
+          if (response.ok) {
+            console.log("Token has been saved");
+          } else {
+            console.log("Failed to save token. Status: " + response.status);
+          }
+        })
+        .catch(function(e) {
+          console.error("An error occurred while saving the token:", e);
+        });
       })
       .catch(function(e) {
-        console.log("The user has not accepted.");
-      })
-    
+        console.log("The user has not accepted to receive notifications.");
+      });
   })
-
-  messaging.onMessage(function(payload){
-    let title = "from  Fikrin";
-    let option = {
-      body: 'You have a notification',
-      icon: '/static/img/fikr.png'
-    };
-    let message = new Notification(title, option);
+  .catch(function(e) {
+    console.error("Failed to register the service worker:", e);
   });
-  
-
-  // we will send the token to django to save it in the database
-
-  fetch('save-token/', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',    
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        'token': token
-      })
-  })
-    
-//  .then(function(response) {
- //   if (response.ok) {
-//        console.log("Token has been saved");
-//    } else {
-//        console.log("Failed to save token. Status: " + response.status);
- //   }
-//  })
-
- // .catch(function(e){
- //   console.log("token could not be saved") 
- //   })
-
-
-
-
   
   </script>
 
