@@ -62,7 +62,6 @@ def save_token(request):
     divice.registration_id = token
     divice.active= True
 
-    #solo si el usuario esta autenticado procederemos a enlazarlo
     if request.user.is_authenticated: divice.user = request.user
 
     try:
@@ -70,6 +69,9 @@ def save_token(request):
         return HttpResponse(json.dumps({ 'message': 'saved token'}))
     except:
         return HttpResponseBadRequest(json.dumps({'message': 'token could not be saved'}))
+
+
+
 
 
 

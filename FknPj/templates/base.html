@@ -90,8 +90,7 @@
   let messaging = firebase.messaging();   // Get Firebase Messaging instance
 
   
-// First, we need to link the service worker.
-navigator.serviceWorker.register('./serviceworker.js')
+  navigator.serviceWorker.register('./serviceworker.js')
   .then(function(register) {
     messaging.useServiceWorker(register);
 
@@ -105,7 +104,7 @@ navigator.serviceWorker.register('./serviceworker.js')
         console.log(token);
 
         // Send the token to Django to save it in the database
-        fetch('save-token/', {
+        fetch('/save-token/', {  // Update the URL to match your Django endpoint
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -133,8 +132,14 @@ navigator.serviceWorker.register('./serviceworker.js')
   .catch(function(e) {
     console.error("Failed to register the service worker:", e);
   });
-  
+
+
+
   </script>
 
     </body>
 </html>
+
+
+
+
