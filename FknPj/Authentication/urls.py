@@ -14,9 +14,8 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('gallery/', gallery_view, name='gallery'),
     path('set_profile_pic/<int:image_id>/', set_profile_pic, name='set_profile_pic'),
-    path('profile_cropping/<int:user_id>/', views.profile_cropping, name="profile_cropping"),
     path('about/',views.about_us, name='about-us'),
-    path('save-token/', views.save_token, name='save_token'),
+
 ]
 
 

@@ -33,6 +33,3 @@ admin.site.register(Notification, NotificationAdmin)
 
 
 
-""" Username: nzmdn
-Email address: nzmdn@gmail.com
-Password: nzmdn """
