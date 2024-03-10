@@ -8,13 +8,37 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.http import require_http_methods
 
-
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 import json
+from fcm_django.models import FCMDevice
 
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def save_token(request):
+
+    body_dict = json.loads(request.body.decode('utf-8'))
+    token = body_dict['token']
+    existe = FCMDevice.objects.filter(registration_id=token, active=True)
+
+    if len(existe) > 0:
+        return HttpResponseBadRequest(json.dumps ({ 'message': 'the token already exists'}))
+    
+    divice = FCMDevice()
+    divice.registration_id = token
+    divice.active= True
+
+    if request.user.is_authenticated: 
+        divice.user = request.user
+        try:
+            divice.save()
+            return HttpResponse(json.dumps({ 'message': 'saved token'}))
+        except:
+            return HttpResponseBadRequest(json.dumps({'message': 'token could not be saved'}))
 
 
 def home(request):

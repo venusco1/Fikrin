@@ -10,6 +10,38 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
+import json
+import requests
+from fcm_django.models import FCMDevice
+
+def send_notification(registration_ids, message_title, message_desc, post_id):
+
+    fcm_api = "AAAAkV-gc5c:APA91bF4PJPVDpihuGhCzMljtG1RjI-ZOn0xLr8UscqsQGw6nPZ7mDz9ttTeXZUj6LHjT1fdwkhUEdXYa22jR-dJ-OEr3_MDwTbVNUsTB8Wofl8H8ApQ8Sbo8dkEnFNTR5OXeOIrtKTS"
+    url = "https://fcm.googleapis.com/fcm/send"
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": 'key=' + fcm_api
+    }
+
+    payload = {
+        "registration_ids": registration_ids,
+        "priority": "high",
+        "notification": {
+            "body": message_desc,
+            "title": str(message_title) + ": ",
+            "click_action": "/" 
+
+        },
+        "data": {
+            "post_id": post_id,
+        }
+    }
+
+    result = requests.post(url, data=json.dumps(payload), headers=headers)
+    print(result.json())
+
+
 
 
 @login_required
@@ -19,7 +51,23 @@ def create_post(request):
 
         post = Post.objects.create(creater=request.user, content_text=content_text)
         post_id = post.id
+        try:
+            devices = FCMDevice.objects.filter(active=True)
+            registration_ids = [device.registration_id for device in devices]
 
+            if registration_ids:
+                message_title = request.user
+                message_desc = content_text
+                send_notification(registration_ids, message_title, message_desc, post_id)
+                print('Notification sent to {} devices.'.format(len(registration_ids)))
+            else:
+                print('No active devices found for sending notifications.')
+
+        except ObjectDoesNotExist:
+            print('An error occurred: FCMDevice model not found or misconfigured.')
+        except Exception as e:
+            print('An error occurred:', str(e))
+        
         return redirect('Authentication:home')
 
     posts = Post.objects.all()
