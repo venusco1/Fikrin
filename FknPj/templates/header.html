@@ -8,11 +8,19 @@
         <ul class="navbar-nav flex-row d-md-none">
             <li class="nav-item text-nowrap">
                 {% if user.is_authenticated %}
-                <a href="{% url 'FknAp:show-noti' %}" class="nav-link px-3">
-                    <i type="button" class="bi bi-bell-fill position-relative text-light">
-                        <span class="position-absolute top-50 ms-1 start-100 translate-middle badge rounded-pill"></span>
-                    </i> {% endif %}
-                </a>
+                    {% with notifications=user.notification_set.all %}
+                        <a href="{% url 'FknAp:show-noti' %}" class="nav-link px-3">
+                            {% if notifications %}
+                                <i type="button" class="bi bi-bell-fill position-relative text-danger">
+                                    <span class="position-absolute top-50 ms-1 start-100 translate-middle badge rounded-pill">{{ notifications.count }}</span>
+                                </i>
+                            {% else %}
+                                <i type="button" class="bi bi-bell-fill position-relative text-light">
+                                </i>
+                            {% endif %}
+                        </a>
+                    {% endwith %}
+                {% endif %}
             </li>
             <li class="nav-item text-nowrap">
                 <button class="nav-link px-3 text-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,9 +54,22 @@
                     </li>
 
                     <li>
-                        <a  class="nav-link py-3" title="Quotes" {% if not user.is_authenticated %} href="" {% endif %} {% if user.is_authenticated %} data-toggle="modal" data-target="#postModal" {% endif %} data-bs-target="#exampleModal" data-bs-placement="right">
+                        {% if user.is_authenticated %}
+                            {% if user.username == "mdndn" or user.username == "നിഷാഗന്ധി" %}
+                            <a href="{% url 'tags:tag_list' %}" class="nav-link py-3" title="About us" data-bs-toggle="tooltip" data-bs-placement="right">
+                                <i class="bi bi-tags-fill pe-none" width="24" height="24" role="img" aria-label="Quotes" style="color: #000157;"></i>
+                            </a>                            
+                            {% else %}
+                            <a class="nav-link py-3" title="Quotes" data-toggle="modal" data-target="#postModal" data-bs-target="#exampleModal" data-bs-placement="right">
+                                <i class="bi bi-vector-pen pe-none" width="24" height="24" role="img" aria-label="Quotes" style="color: #000157;"></i>
+                            </a>
+                            {% endif %}
+                        {% else %}
+                        <a class="nav-link py-3" title="Quotes" href="">
                             <i class="bi bi-vector-pen pe-none" width="24" height="24" role="img" aria-label="Quotes" style="color: #000157;"></i>
                         </a>
+                        {% endif %}
+                    
                     </li>
 
                     <li>

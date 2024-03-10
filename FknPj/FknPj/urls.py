@@ -6,10 +6,11 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('post/', include('FknAp.urls')),
     path('', include('Authentication.urls')),
     path('', include('pwa.urls')),
+    path('admin/', admin.site.urls),
+    path('post/', include('FknAp.urls')),
+    path('tags/', include('tags.urls')),
 ]
 
 if settings.DEBUG:

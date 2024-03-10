@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "pwa",
     "Authentication",
     "fcm_django",
+    "tags",
 ]
 
 MIDDLEWARE = [
