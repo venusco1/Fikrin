@@ -18,12 +18,10 @@ def tag_detail(request, tag_id):
 
 
 def random_posts(request):
-
-    posts = Post.objects.all()
-
-    shuffled_posts = list(posts)
+    posts = list(Post.objects.all())  # Convert QuerySet to a list
+    random.shuffle(posts)  # Shuffle the list of posts
 
     context = {
-        'posts': shuffled_posts
+        'posts': posts
     }
     return render(request, 'home_quotes.html', context)
