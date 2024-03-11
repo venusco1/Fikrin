@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block 'title' %}{% endblock 'title' %}
+
+{% block 'style' %}
+
+<link rel="stylesheet" href="{% static 'css/index-styles_v1.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<script src="{% static 'js/like_v1.js' %}"></script>
+
+<script>
+    function copyContent(text) {
+        // Create a textarea element to hold the text temporarily
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+
+        // Select and copy the text from the textarea
+        textarea.select();
+        document.execCommand('copy');
+
+        // Remove the textarea element
+        document.body.removeChild(textarea);
+
+    }
+</script>
+
+
+<style>
+
+    @charset "UTF-8";
+    /*
+    BASE STYLES
+    */
+    @import url(https://fonts.googleapis.com/css?family=Lora:400,400italic);
+    html,
+    body {
+      margin: 0;
+      background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/432525/geometry2.png);
+      font-family: lora;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    a {
+      text-decoration: none;
+    }
+    
+    li {
+      list-style: none;
+    }
+    
+    .main-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    /*
+    QOUTES CONTAINER
+    */
+    .quotes-container {
+      max-width: 800px; /* Maximum width */
+      padding-bottom: 10px;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      border-radius: 2px;
+  }
+  
+  @media screen and (min-width: 768px) {
+      .quotes-container {
+          width: 60%; /* Adjusted width for larger screens */
+      }
+  }
+  
+    
+  .quote {
+    width: 100%; /* Set width to 100% for responsiveness */
+    max-width: 750px; /* Set maximum width to 750px */
+    height: auto;
+    margin: 20px 0 0;
+    padding: 20px;
+    position: relative;
+    border-radius: 2px;
+    overflow: hidden;
+    opacity: 0.7;
+    color: #000157;
+  }
+  
+  /* Media query for smaller screens */
+  @media screen and (max-width: 768px) {
+    .quote {
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+  }
+  
+    .quote::before {
+      content: "“";
+      font-size: 7em;
+      position: absolute;
+      top: -15px;
+      left: 5px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+    .quote::after {
+      content: "”";
+      font-size: 15em;
+      line-height: 100px;
+      position: absolute;
+      bottom: -80px;
+      right: -10px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+    .quote p {
+      font-size: 16px;
+      line-height: 25px;
+      margin: 0 0 10px 0;
+      padding: 20px;
+    }
+    
+    /*
+    USER INPUT
+    */
+    .user-input {
+      width: 800px;
+      margin: 0 auto;
+      padding: 20px 0;
+      border-radius: 2px;
+    }
+    .user-input button {
+      margin: 20px 0 0;
+      width: 347px;
+      height: 49px;
+      display: inline-block;
+      border-radius: 2px;
+      background: #00e696;
+      border: none;
+      font-size: 1.1em;
+      color: white;
+    }
+    .user-input .name {
+      display: inline-block;
+      width: 380px;
+      height: 50px;
+      margin: 0 20px 0 25px;
+      border-radius: 2px;
+      border: none;
+      padding: 0 0 0 5px;
+      background: #ddd;
+    }
+    .user-input .name:focus {
+      outline: none;
+      border: none;
+    }
+    .user-input textarea {
+      display: block;
+      margin: 0 auto;
+      border-radius: 2px;
+      border: none;
+      padding: 5px 0 0 5px;
+      resize: none;
+      background: #ddd;
+    }
+    .user-input textarea:focus {
+      outline: none;
+    }
+    
+    .error-animation {
+      -webkit-animation-name: blink;
+              animation-name: blink;
+      -webkit-animation-duration: 0.2s;
+              animation-duration: 0.2s;
+      -webkit-animation-timing-function: step-end;
+              animation-timing-function: step-end;
+      -webkit-animation-iteration-count: 4;
+              animation-iteration-count: 4;
+      -webkit-animation-direction: alternate;
+              animation-direction: alternate;
+    }
+    
+    @-webkit-keyframes blink {
+      50% {
+        background: rgba(255, 0, 0, 0.8);
+      }
+    }
+    
+    @keyframes blink {
+      50% {
+        background: rgba(255, 0, 0, 0.8);
+      }
+    }
+    .bg1 {
+      background: #F79F24;
+    }
+    
+    .bg2 {
+      background: #E20049;
+    }
+    
+    .bg3 {
+      background: rgb(193 193 193 / 50%);
+  }
+  
+    
+    .bg4 {
+      background: #33425B;
+    }
+  
+  </style>
+
+{% endblock 'style' %}
+
+{% block 'content' %}
+
+{% include "header.html" %}
+
+
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container-fluid">
+        <div class="row w-100">
+            <div class="col">
+                <a class="nav-link" href="{% url 'Authentication:home' %}" onclick="selectColumn(0)">Posts</a>
+            </div>
+            <div class="col">
+                <a class="nav-link text-danger" href="{% url 'tags:random_posts' %}" onclick="selectColumn(1)">Quotes</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container px-4">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8">
+        <section class="quotes-container">
+          {% for item in posts %}
+          <blockquote class="quote bg3">
+            <p>{{ item.content }}</p>
+            <cite><small>- {{item.title}}</small></cite>
+          </blockquote>
+          {% endfor %}
+      <!-- <blockquote class="quote bg4">
+            <p>We are what our thoughts have made us; so take care about what you think. Words are secondary. Thoughts live; they travel far.</p>
+            <cite>- Swami Vivekananda</cite>
+          </blockquote>
+          <blockquote class="quote bg2">
+            <p>Yesterday is not ours to recover, but tomorrow is ours to win or lose.</p>
+            <cite>- Lyndon B. Johnson</cite>
+          </blockquote>
+          <blockquote class="quote bg1">
+            <p>Work hard for what you want because it won't come to you without a fight. You have to be strong and courageous and know that you can do anything you put your mind to. If somebody puts you down or criticizes you, just keep on believing in yourself and turn it into something positive.</p>
+            <cite>- Leah LaBelle</cite>
+          </blockquote>
+          <blockquote class="quote bg2">
+            <p>You have brains in your head. You have feet in your shoes. You can steer yourself in any direction you choose. You're on your own, and you know what you know. And you are the guy who'll decide where to go.</p>
+            <cite>- Dr. Seuss</cite>
+          </blockquote> -->
+        </section>
+      </div>
+    </div>
+  </div>
+
+<script src="{% static 'js/index_v1.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{% endblock 'content' %}
+
+
+
+

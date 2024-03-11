@@ -82,3 +82,35 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+    /* Custom styles */
+    .navbar {
+        box-shadow: 0 8px 17px 0 rgba(0, 0, 0, .2);
+        min-height: 50px;
+        background: #fff;
+    }
+
+    .nav-item {
+        display: flex;
+        justify-content: center;
+    }
+
+    .nav-link {
+        font-size: 16px;
+        font-weight: 500;
+        color: #5bc0de;
+        transition: all 0.2s ease;
+        text-align: center;
+    }
+
+    .nav-link:hover {
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    .nav-link:active {
+        color: rgba(0, 0, 0, 0.9);
+    }
+
+    .active-col {
+        color: red;
+    }

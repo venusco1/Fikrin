@@ -6,10 +6,10 @@
 
 {% block 'style' %}
 
-<link rel="stylesheet" href="{% static 'css/index-styles.css' %}">
+<link rel="stylesheet" href="{% static 'css/index-styles_v1.css' %}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-<script src="{% static 'js/like.js' %}"></script>
+<script src="{% static 'js/like_v1.js' %}"></script>
 
 <script>
     function copyContent(text) {
@@ -28,12 +28,28 @@
     }
 </script>
 
-
 {% endblock 'style' %}
 
 {% block 'content' %}
 
 {% include "header.html" %}
+
+
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container-fluid">
+        <div class="row w-100">
+            <div class="col">
+                <a class="nav-link text-danger" href="{% url 'Authentication:home' %}">Posts</a>
+            </div>
+            <div class="col">
+                <a class="nav-link" href="{% url 'tags:random_posts' %}">Quotes</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
 
 <div class="w-full sm:max-w-lg sm:mx-auto px-4" style="margin-bottom: 100px;">
     {% for item in posts %}
@@ -221,7 +237,7 @@
 {% endif %}
 
 
-<script src="{% static 'js/index.js' %}"></script>
+<script src="{% static 'js/index_v1.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 {% endblock 'content' %}

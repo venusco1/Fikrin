@@ -4,146 +4,243 @@
 
 {% block 'style' %}
 
+
 <style>
 
-    body{
-        background: #fff !important;
-        margin-top: 100px !important;
-        margin-bottom: 100px !important;
+  @charset "UTF-8";
+  /*
+  BASE STYLES
+  */
+  @import url(https://fonts.googleapis.com/css?family=Lora:400,400italic);
+  html,
+  body {
+    margin: 0;
+    background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/432525/geometry2.png);
+    font-family: lora;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  li {
+    list-style: none;
+  }
+  
+  .main-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /*
+  QOUTES CONTAINER
+  */
+  .quotes-container {
+    max-width: 800px; /* Maximum width */
+    margin: 65px auto; /* Center the container */
+    padding-bottom: 10px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    border-radius: 2px;
+}
+
+@media screen and (min-width: 768px) {
+    .quotes-container {
+        width: 60%; /* Adjusted width for larger screens */
     }
-    .testimonial{
-        margin: 0 20px 40px;
+}
+
+  
+.quote {
+  width: 100%; /* Set width to 100% for responsiveness */
+  max-width: 750px; /* Set maximum width to 750px */
+  height: auto;
+  margin: 20px 0 0;
+  padding: 20px;
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+  opacity: 0.7;
+  color: #000157;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+  .quote {
+      padding: 10px; /* Adjust padding for smaller screens */
+  }
+}
+
+  .quote::before {
+    content: "“";
+    font-size: 7em;
+    position: absolute;
+    top: -15px;
+    left: 5px;
+    color: rgba(255, 255, 255, 0.3);
+  }
+  .quote::after {
+    content: "”";
+    font-size: 15em;
+    line-height: 100px;
+    position: absolute;
+    bottom: -80px;
+    right: -10px;
+    color: rgba(255, 255, 255, 0.3);
+  }
+  .quote p {
+    font-size: 16px;
+    line-height: 25px;
+    margin: 0 0 10px 0;
+    padding: 20px;
+  }
+  
+  /*
+  USER INPUT
+  */
+  .user-input {
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px 0;
+    border-radius: 2px;
+  }
+  .user-input button {
+    margin: 20px 0 0;
+    width: 347px;
+    height: 49px;
+    display: inline-block;
+    border-radius: 2px;
+    background: #00e696;
+    border: none;
+    font-size: 1.1em;
+    color: white;
+  }
+  .user-input .name {
+    display: inline-block;
+    width: 380px;
+    height: 50px;
+    margin: 0 20px 0 25px;
+    border-radius: 2px;
+    border: none;
+    padding: 0 0 0 5px;
+    background: #ddd;
+  }
+  .user-input .name:focus {
+    outline: none;
+    border: none;
+  }
+  .user-input textarea {
+    display: block;
+    margin: 0 auto;
+    border-radius: 2px;
+    border: none;
+    padding: 5px 0 0 5px;
+    resize: none;
+    background: #ddd;
+  }
+  .user-input textarea:focus {
+    outline: none;
+  }
+  
+  .error-animation {
+    -webkit-animation-name: blink;
+            animation-name: blink;
+    -webkit-animation-duration: 0.2s;
+            animation-duration: 0.2s;
+    -webkit-animation-timing-function: step-end;
+            animation-timing-function: step-end;
+    -webkit-animation-iteration-count: 4;
+            animation-iteration-count: 4;
+    -webkit-animation-direction: alternate;
+            animation-direction: alternate;
+  }
+  
+  @-webkit-keyframes blink {
+    50% {
+      background: rgba(255, 0, 0, 0.8);
     }
-    .testimonial .testimonial-content{
-        padding: 35px 25px 35px 50px;
-        margin-bottom: 35px;
-        background: #f5f5f5;
-        position: relative;
+  }
+  
+  @keyframes blink {
+    50% {
+      background: rgba(255, 0, 0, 0.8);
     }
-    .testimonial .testimonial-content:before{
-        content: "";
-        position: absolute;
-        bottom: -30px;
-        left: 0;
-        border-top: 15px solid #718076;
-        border-left: 15px solid transparent;
-        border-bottom: 15px solid transparent;
-    }
-    .testimonial .testimonial-content:after{
-        content: "";
-        position: absolute;
-        bottom: -30px;
-        right: 0;
-        border-top: 15px solid #718076;
-        border-right: 15px solid transparent;
-        border-bottom: 15px solid transparent;
-    }
-    .testimonial-content .testimonial-icon{
-        width: 50px;
-        height: 50px;
-        background: #000157;
-        text-align: center;
-        font-size: 22px;
-        color: #fff;
-        line-height: 42px;
-        position: absolute;
-        top: 37px;
-        left: -19px;
-    }
-    .testimonial-content .testimonial-icon:before{
-        content: "";
-        border-bottom: 16px solid #000157;
-        border-left: 18px solid transparent;
-        position: absolute;
-        top: -16px;
-        left: 1px;
-    }
-    .testimonial .description{
-        font-size: 15px;
-        font-style: italic;
-        color: #8a8a8a;
-        line-height: 23px;
-        margin: 0;
-    }
-    .testimonial .title{
-        display: block;
-        font-size: 18px;
-        font-weight: 700;
-        color: #525252;
-        text-transform: capitalize;
-        letter-spacing: 1px;
-        margin: 0 0 5px 0;
-    }
-    .testimonial .post{
-        display: block;
-        font-size: 14px;
-        color: #000157; 
-    }
-    .owl-theme .owl-controls{
-        margin-top: 20px;
-    }
-    .owl-theme .owl-controls .owl-page span{
-        background: #ccc;
-        opacity: 1;
-        transition: all 0.4s ease 0s;
-    }
-    .owl-theme .owl-controls .owl-page.active span,
-    .owl-theme .owl-controls.clickable .owl-page:hover span{
-        background: #000157;
-    }
+  }
+  .bg1 {
+    background: #F79F24;
+  }
+  
+  .bg2 {
+    background: #E20049;
+  }
+  
+  .bg3 {
+    background: rgb(193 193 193 / 50%);
+}
+
+  
+  .bg4 {
+    background: #33425B;
+  }
 
 </style>
+
+<link rel="stylesheet" href="{% static 'css/index-styles_v1.css' %}">
 
 {% endblock 'style' %}
 
 {% block 'content' %}
 
-
 <div class="container-fluid fixed-top" style="padding: 0;">
-    <header class="navbar flex-md-nowrap pe-0 shadow mb-0 pl-2 py-2" data-bs-theme="light" style="background-color: #000157;">
-        <a class="navbar-brand fs-5 text-white px-3" href="{% url 'tags:tag_list' %}">
-            <i class="bi bi-arrow-left px-2 fw-bold" style="display: block; width: 165px; height: 40px"><small class="fs-6 mx-2"><b>{{ tag.name }} Posts</b></small></i>
-        </a>
-    </header>
+  <header class="navbar flex-md-nowrap pe-0 shadow mb-0 pl-2 py-2" data-bs-theme="light" style="background-color: #000157;">
+      <a class="navbar-brand fs-5 text-white px-3" href="{% url 'tags:tag_list' %}">
+          <i class="bi bi-arrow-left px-2 fw-bold" style="display: block; width: 165px; height: 40px"><small class="fs-6 mx-2"><b>{{ tag.name }} quotes</b></small></i>
+      </a>
+  </header>
+</div>
+
+<div class="container px-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-8">
+      <section class="quotes-container">
+        {% for item in posts %}
+        <blockquote class="quote bg3">
+          <p>{{ item.content }}</p>
+          <cite><small>- {{item.title}}</small></cite>
+        </blockquote>
+        {% endfor %}
+    <!-- <blockquote class="quote bg4">
+          <p>We are what our thoughts have made us; so take care about what you think. Words are secondary. Thoughts live; they travel far.</p>
+          <cite>- Swami Vivekananda</cite>
+        </blockquote>
+        <blockquote class="quote bg2">
+          <p>Yesterday is not ours to recover, but tomorrow is ours to win or lose.</p>
+          <cite>- Lyndon B. Johnson</cite>
+        </blockquote>
+        <blockquote class="quote bg1">
+          <p>Work hard for what you want because it won't come to you without a fight. You have to be strong and courageous and know that you can do anything you put your mind to. If somebody puts you down or criticizes you, just keep on believing in yourself and turn it into something positive.</p>
+          <cite>- Leah LaBelle</cite>
+        </blockquote>
+        <blockquote class="quote bg2">
+          <p>You have brains in your head. You have feet in your shoes. You can steer yourself in any direction you choose. You're on your own, and you know what you know. And you are the guy who'll decide where to go.</p>
+          <cite>- Dr. Seuss</cite>
+        </blockquote> -->
+      </section>
+    </div>
+  </div>
 </div>
 
 
-
-<div class="w-full sm:max-w-lg sm:mx-auto px-4" style="margin-bottom: 100px;">
-  
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="testimonial-slider" class="owl-carousel">
-                    {% for post in posts %}
-                    <div class="testimonial">
-                        <div class="testimonial-content">
-                            <div class="testimonial-icon">
-                                {% if post.tags.first.profile_picture %}
-                                    <img src="{{ post.tags.first.profile_picture.url }}" width="50" height="50" style="padding:2px;">
-                                {% else %}
-                                    <i class="fa fa-quote-left"></i>
-                                {% endif %}
-                            </div>
-                            
-                            <p class="description">{{ post.content }}</p>
-                        </div>
-                <!--     <h3 class="title">John</h3>
-                        <span class="post">Web Developer</span> -->
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
-</div>    
-<script src="{% static '' %}"></script>
-
-
 {% endblock 'content' %}
+
 
 
 
