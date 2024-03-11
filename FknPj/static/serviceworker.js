@@ -3,7 +3,35 @@ const cacheName = 'your-app-cache';
 
 const filesToCache = [
     '/',  // Add all your static files here 
+    '/css/bootstrap.min.css',
+    '/css/comment-styles_v1.css',
+    '/css/index-styles_v1.css',
+    '/css/login-styles_v1.css',
+    '/css/noti-styles_v1.css',
+    '/css/profile-styles_v1.css',
+    '/css/styles_v1.css',
+    '/js/bootstrap.bundle.min.js',
+    '/js/comments_v1.js',
+    '/js/index_v1.js',
+    '/js/like_v1.js',
+    '/js/scripts_v1.js',
+    '/img/cover.jpg',
+    '/img/fkrnICN.png',
+    '/img/fkr.png',
+    '/img/manifestico',
+    '/img/placeholder___.png',
+    '/img/profile.jpg',
+    '/img/feather-solid.svg',
+    '/img/fkr2.png',
+    '/img/fkrnlogo.png',
+    '/img/girl.png',
+    '/img/placeholder.png',
+    '/img/profile_avatar.png',
+    '/img/write.png',
+    '/manifest.json',
+    '/serviceworker.js'
 ];
+
 
 self.addEventListener('install', (event) => {
     event.waitUntil(

@@ -18,15 +18,10 @@ def tag_detail(request, tag_id):
 
 
 def random_posts(request):
-    # Retrieve a random set of tags
-    tags = Tag.objects.all().order_by('?')[:3]  # Get 3 random tags
 
-    # Retrieve posts associated with these random tags
-    posts = Post.objects.filter(tags__in=tags).distinct()
+    posts = Post.objects.all()
 
-    # Shuffle the order of posts
     shuffled_posts = list(posts)
-    random.shuffle(shuffled_posts)
 
     context = {
         'posts': shuffled_posts
