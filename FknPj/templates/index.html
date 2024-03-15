@@ -121,11 +121,11 @@
                     <li class="col nav-item">
                         <a class="nav-link" ><i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#edit_quotes{{ item.id }}" data-bs-placement="right"></i> </a>
                     </li>
-                    <li class="col nav-item">
+                 <!--   <li class="col nav-item">
                         <a class="nav-link" data-bs-toggle="modal" data-bs-target="#confirmationModal">
                             <i class="bi bi-trash"></i>
                           </a>
-                    </li>
+                    </li> -->
                     {% endif %}
                     <li class="col nav-item">
                         <a class="nav-link" {% if user.is_authenticated %} onclick="copyContent('{{ item.content_text|escapejs }}');" {% endif %}><i class="bi bi-files scrollLink"></i></a>
