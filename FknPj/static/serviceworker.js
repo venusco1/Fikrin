@@ -34,46 +34,51 @@ const filesToCache = [
 
 
 self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(cacheName)
-            .then((cache) => {
-                return cache.addAll(filesToCache);
-            })
-    );
+  event.waitUntil(
+    caches.open(cacheName)
+      .then((cache) => {
+        return cache.addAll(filesToCache);
+      })
+  );
 });
+
 
 self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                // Cache hit - return response
-                if (response) {
-                    return response;
-                }
+  event.respondWith(
+    caches.match(event.request)
+      .then((response) => {
+        // Cache hit - return response
+        if (response) {
+          return response;
+        }
 
-                // Clone the request
-                let fetchRequest = event.request.clone();
+        // Check if request is for a same-origin resource
+        if (!event.request.url.startsWith(self.location.origin)) {
+          return fetch(event.request);
+        }
 
-                return fetch(fetchRequest)
-                    .then((response) => {
-                        if (!response || response.status !== 200 || response.type !== 'basic') {
-                            return response;
-                        }
+        // Clone the request
+        let fetchRequest = event.request.clone();
 
-                        // Clone the response
-                        let responseToCache = response.clone();
+        return fetch(fetchRequest)
+          .then((response) => {
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
 
-                        caches.open(cacheName)
-                            .then((cache) => {
-                                cache.put(event.request, responseToCache);
-                            });
+            // Clone the response
+            let responseToCache = response.clone();
 
-                        return response;
-                    });
-            })
-    );
+            caches.open(cacheName)
+              .then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+
+            return response;
+          });
+      })
+  );
 });
-
 
 
 
