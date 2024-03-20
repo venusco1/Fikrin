@@ -8,39 +8,62 @@
     "icons": [
         {
             "src": "/static/img/manifestico/72.png",
-            "sizes": "72x72"
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/static/img/manifestico/96.png",
-            "sizes": "96x96"
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/static/img/manifestico/128.png",
-            "sizes": "128x128"
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/static/img/manifestico/144.png",
-            "sizes": "144x144"
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/static/img/manifestico/152.png",
-            "sizes": "152x152"
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/static/img/manifestico/192.png",
-            "sizes": "192x192"
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/static/img/manifestico/256.png",
-            "sizes": "256x256"
+            "sizes": "256x256",
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/static/img/manifestico/384.png",
-            "sizes": "384x384"
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/static/img/manifestico/512.png",
-            "sizes": "512x512"
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
         }
-    ]
+    ],
+    "prefer_related_applications": false,
+    "related_applications": [],
+    "scope": "/",
+    "description": "Your app description goes here",
+    "lang": "en-US"
 }
