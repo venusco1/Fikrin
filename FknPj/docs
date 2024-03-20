@@ -110,7 +110,8 @@ sudo service supervisor restart
 
 
 
-git tocken : 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
+git tocken : 
+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
 
 aws connect pem key : ssh -i "nirkif.pem" ubuntu@ec2-16-171-39-228.eu-north-1.compute.amazonaws.com
 
