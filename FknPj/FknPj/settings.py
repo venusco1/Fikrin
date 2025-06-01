@@ -15,7 +15,7 @@ SECRET_KEY = "django-insecure-rsucr37x(waygjv&w@+jdp!qlu$$d&d$%@5$gbho$(#u3765)2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['fikr.in', 'www.fikr.in','*']
+ALLOWED_HOSTS = ['fkrin.in', 'www.fkrin.in','*']
 
 
 # Application definition
