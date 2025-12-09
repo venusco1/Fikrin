@@ -77,8 +77,8 @@ def signup(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        confirmation = request.POST.get('confirm-password')
-        mobile_number = request.POST.get('mobile-number')
+        confirmation = request.POST.get('confirm_password')
+        mobile_number = request.POST.get('mobile_number')
 
         if   username and password and mobile_number:
             if CustomUser.objects.filter(username=username).exists():

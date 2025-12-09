@@ -1,64 +1,143 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% load static %}
 
-{% block 'title' %}{% endblock 'title' %}
+{% block 'title' %}Login - {{ site_name|default:"Fikrin" }}{% endblock 'title' %}
 
 {% block 'style' %}
-    <link rel="stylesheet" href="{% static 'css/login-styles_v1.css' %}">
+
+<link rel="stylesheet" href="{% static 'css/login-styles_v1.css' %}">
+
 {% endblock 'style' %}
 
 {% block 'content' %}
 
-<div class="container-fluid sticky-top w-100 mx-0 p-0">
-	<header class="navbar flex-md-nowrap p-0 shadow mb-0 justify-content-center" data-bs-theme="light" style="background-color: #000157;"> 
-		<a class="navbar-brand fs-6 text-white" href="{% url 'Authentication:home' %}">
-			<img src="{% static 'img/fkrnlogo.png' %}" style="width: 105px; height: 60px" alt="Logo">
-		</a>
-	</header>
+<div class="container">
+  <!-- Top navbar / branding -->
 
-	<div class="alert alert-info alert-dismissible fade show mb-0 shadow-sm" role="alert" style="background-color: #e6f7ff; color: #004085; border-color: #b8daff;">
-	<small>If you haven't registered yet, please</small>  
-		<a class="ms-1" href="{% url 'Authentication:signup' %}" style="text-decoration: none; color: #0056b3;"><small class="mx-0 px-0">Signup</small></a>
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-	</div>
-</div>
+  <!-- Login card -->
+  <div class="row justify-content-center my-4">
+    <div class="col-lg-5 col-md-7 col-11">
+      <main class="card shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="card-title mb-3 text-center">Sign in to your account</h2>
+          <p class="text-center text-muted small mb-4">Welcome back — enter your credentials below.</p>
 
-<div class="w-full sm:max-w-lg sm:mx-auto">
-	<article class="overflow-hidden">
-		<div class="sm:flex sm:flex-wrap">
-			<div class="screen">
-				<div class="screen__content">
-					<form class="login" action="" method="post">
-						{% csrf_token %}  
-						<div class="login__field">
-							<i class="login__icon fas fa-user"></i>
-							<input type="text" class="login__input" placeholder="Username" name="username" required minlength="5">
-							<p class="text-danger"><small>{{error_message}}</small></p>
-						</div>
-						<div class="login__field">
-							<i class="login__icon fas fa-lock"></i>
-							<input type="password" class="login__input" placeholder="Password" name="password" required>
-						</div>
-						<button class="button login__submit" type="submit">
-							<span class="button__text">Log In Now</span>
-							<i class="button__icon fas fa-chevron-right"></i>
-						</button>             
-					</form>
-				</div>
-				<div class="screen__background">
-					<span class="screen__background__shape screen__background__shape4"></span>
-					<span class="screen__background__shape screen__background__shape3"></span>        
-					<span class="screen__background__shape screen__background__shape2"></span>
-					<span class="screen__background__shape screen__background__shape1"></span>
-				</div>      
+          <!-- Optional: render Django messages if used -->
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <!-- Login form -->
+          <form class="needs-validation" action="" method="post" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="id_username" class="form-label">Username</label>
+              <input
+                id="id_username"
+                name="username"
+                type="text"
+                class="form-control"
+                placeholder="Enter username"
+                required
+                minlength="5"
+                autofocus
+                aria-describedby="usernameHelp"
+              >
+              <div id="usernameHelp" class="form-text small">Min 5 characters.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="id_password" class="form-label">Password</label>
+              <div class="input-group">
+                <input
+                  id="id_password"
+                  name="password"
+                  type="password"
+                  class="form-control"
+                  placeholder="Enter password"
+                  required
+                  aria-describedby="passwordToggle"
+                >
+                <button class="btn btn-outline-secondary" type="button" id="passwordToggle" aria-label="Show password">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Error message area (aria-live for screen readers) -->
+            <div class="mb-3" aria-live="polite" id="formErrors">
+              {% if error_message %}
+                <div class="text-danger small">{{ error_message }}</div>
+              {% endif %}
+            </div>
+
+			<div class="d-grid gap-2">
+			<button type="submit" class="btn btn-primary btn-lg">Log In</button>
 			</div>
-		</div>
-	</article>
+
+			<!-- Signup + Home links -->
+			<div class="text-center mt-3">
+			<p class="small mb-1">
+				Don't have an account?
+				<a href="{% url 'Authentication:signup' %}" class="fw-semibold text-decoration-none"> Sign up</a>
+			</p>
+
+			<a href="{% url 'Authentication:home' %}" class="small text-decoration-none">
+				← Back to Home
+			</a>
+			</div>
+
+          </form>
+        </div>
+      </main>
+      <!-- Decorative background shapes (kept minimal for accessibility) -->
+      <div class="mt-3 text-center small text-muted">Secure access • Protected by best practices</div>
+    </div>
+  </div>
+
+  {% include "footer.html" %}
 </div>
 
-{% include "footer.html" %}
+<!-- Inline JS (you can move to a separate file) -->
+<script>
+  // Show/hide password
+  (function () {
+    const toggle = document.getElementById('passwordToggle');
+    const pwd = document.getElementById('id_password');
+    if (toggle && pwd) {
+      toggle.addEventListener('click', function () {
+        if (pwd.type === 'password') {
+          pwd.type = 'text';
+          toggle.innerHTML = '<i class="fas fa-eye-slash"></i>';
+          toggle.setAttribute('aria-label','Hide password');
+        } else {
+          pwd.type = 'password';
+          toggle.innerHTML = '<i class="fas fa-eye"></i>';
+          toggle.setAttribute('aria-label','Show password');
+        }
+      });
+    }
+
+    // Simple client-side bootstrap validation
+    (function () {
+      'use strict'
+      const forms = document.querySelectorAll('.needs-validation')
+      Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+            form.classList.add('was-validated')
+          }
+        }, false)
+      })
+    })()
+  })();
+</script>
 
 {% endblock 'content' %}
-
-
