@@ -30,9 +30,9 @@
 <hr style="margin-top: 5px; margin-bottom: 5px;">
 
 <div class="container mt-3" id="dynamicMarginContainer">
-    
+
    <!-- Comments Section -->
-    <div class="comments-container"> 
+    <div class="comments-container">
        <!-- Display existing comments -->
        {% for reply in parent_comment.replies.all %}
 
@@ -48,11 +48,10 @@
                 <p class="text-gray-700 mt-2 mb-0" id="content" style="white-space: pre-wrap;">{{ reply.comment_content }}</p>
             </div>
             <button class="btn btn-sm btn-link text-decoration-none p-0 mt-1" onclick="toggleContent(this)">Read More</button>
-            
+
             <div><small class="text-body-secondary fw-lighter">
                 Updated {{ reply.comment_time|timesince }} ago </small></div>
-                
-               
+
                <div class="container mt-0">
                 <div class="row">
                     <div class="col-3 px-0 mx-0">
@@ -71,13 +70,12 @@
                     </div>
                 </div>
                 </div>
-               
+
            </div>
        </div>
 
        {% endfor %}
     </div>
-
 
 {% comment %} <!-- New Reply Form -->
 <form method="post" action="{% url 'FknAp:add_reply' post.id parent_comment.id %}" class="comment-form">
@@ -94,7 +92,6 @@
 
 </div> {% endcomment %}
 
-
 <div class="container mt-3 m-0 p-0">
     <form method="post" action="{% url 'FknAp:add_reply' post.id parent_comment.id %}" class="comment-form" style="position: fixed; bottom: 0; width: 100%; background-color: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1);">
         {% csrf_token %}
@@ -102,7 +99,7 @@
             <textarea class="form-control border-0" placeholder="Add a Reply" name="body" id="my-comment-reply" style="height: 2.5rem;" required minlength="3"></textarea>
             <div class="input-group-append ms-1">
                 <button class="btn btn-link-light" type="submit">
-                    <i class="far fa-paper-plane"></i> 
+                    <i class="far fa-paper-plane"></i>
                 </button>
             </div>
         </div>
@@ -112,6 +109,3 @@
 <script src="{% static 'js/comments_v1.js' %}"></script>
 
 {% endblock 'content' %}
-
-
-

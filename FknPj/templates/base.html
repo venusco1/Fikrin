@@ -1,29 +1,99 @@
-{% load static %}                                                                            
+{% load static %}
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- Basic Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{% block title %}{% endblock %}</title>
+    <!-- Title (Dynamic) -->
+    <title>
+        {% block title %}
+            Fikrin – Thoughts, Words & Feelings Shared
+        {% endblock %}
+    </title>
 
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#000157">
-        <!-- Favicon -->
-        <link rel="shortcut icon" href="{% static 'img/fkrnICN.png' %}">
+    <!-- Primary SEO Meta -->
+    <meta name="description"
+          content="{% block meta_description %}
+          Fikrin is a social writing platform where people share thoughts, emotions, poems, and perspectives in Malayalam and English.
+          {% endblock %}">
+
+    <meta name="keywords"
+          content="Fikrin, Malayalam thoughts, poetry sharing, write feelings, social writing platform, Malayalam quotes, short stories, emotions">
+
+    <meta name="author" content="Fikrin">
+    <meta name="robots" content="index, follow">
+
+    <!-- Canonical URL -->
+    <link rel="canonical"
+          href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
+
+    <!-- Theme / PWA -->
+    <meta name="theme-color" content="#000157">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Fikrin">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'img/fkrnICN.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'img/fkrnICN.png' %}">
+
+    <!-- ===================== -->
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+    <!-- ===================== -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Fikrin">
+    <meta property="og:title"
+          content="{% block og_title %}Fikrin – Thoughts That Speak{% endblock %}">
+    <meta property="og:description"
+          content="{% block og_description %}
+          A place to share thoughts, emotions, poetry, and stories.
+          {% endblock %}">
+    <meta property="og:url"
+          content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    <meta property="og:image"
+          content="{% block og_image %}
+          {{ request.scheme }}://{{ request.get_host }}{% static 'img/og-default.png' %}
+          {% endblock %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- ===================== -->
+    <!-- Twitter / X -->
+    <!-- ===================== -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title"
+          content="{% block twitter_title %}Fikrin – Thoughts That Speak{% endblock %}">
+    <meta name="twitter:description"
+          content="{% block twitter_description %}
+          Share your thoughts and emotions with the world.
+          {% endblock %}">
+    <meta name="twitter:image"
+          content="{% block twitter_image %}
+          {{ request.scheme }}://{{ request.get_host }}{% static 'img/og-default.png' %}
+          {% endblock %}">
+
+    <!-- ===================== -->
+    <!-- Performance & SEO -->
+    <!-- ===================== -->
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    {% block extra_head %}{% endblock %}
 
         <!-- JavaScript to hide address bar on page load -->
         <script type="text/javascript">
-            
+
             window.onload = function() {
                 setTimeout(function() {
                     window.scrollTo(0, 1); // Scroll to hide the address bar
                 }, 0);
             };
         </script>
-        
+
         <script>
           // Function to handle notification click action
           function handleNotificationClick() {
@@ -59,13 +129,10 @@
                 measurementId: "G-93ZXLVMBCF"
             };
           </script>
-          
+
           <!-- Include Firebase JavaScript SDK -->
           <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
           <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
-
-
-        
 
     </head>
     <body>
@@ -73,7 +140,6 @@
         {% block 'content' %}{% endblock 'content' %}
 
         {% block 'script' %}{% endblock 'script' %}
-
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
@@ -95,7 +161,7 @@
               });
           }
       </script>
-      
+
       <script type="module">
   console.log("🟢 STEP 0: Script file loaded");
 
@@ -181,7 +247,7 @@
           'token': token
         })
       })
-      
+
     } else {
       console.warn("⚠️ STEP 9 WARNING: Token is NULL");
     }
@@ -192,36 +258,50 @@
 
   console.log("🟢 STEP 10: Script execution finished");
 
-
 </script>
 
-
-
+<!-- pop up window for sharing posts -->
 <script>
-function sharePost(postContent, siteUrl) {
+document.addEventListener("click", function (e) {
+    const btn = e.target.closest(".share-btn");
+    if (!btn) return;
 
-    const shareText = `${postContent}\n\n— via Fikrin`;
-
-    if (navigator.share) {
-        navigator.share({
-            title: "Fikrin Post",
-            text: shareText,
-            url: siteUrl
-        })
-        .catch(err => console.log("Share cancelled"));
-    } else {
-        alert("Sharing not supported on this browser");
+    if (!navigator.share) {
+        alert("Sharing not supported");
+        return;
     }
+
+    console.log("Sharing:", btn.dataset.content, btn.dataset.url);
+
+    navigator.share({
+      title: "Fikrin Post",
+      text: btn.dataset.content + "\n\nRead more on Fikrin:",
+      url: btn.dataset.url
+});
+
+});
+</script>
+
+<!-- Instagram Sharing -->
+<script>
+  // Function to copy text for Instagram sharing
+function copyInstagramText(text, url) {
+    const finalText =
+        text +
+        "\n\n✨ Read more thoughts like this on Fikrin\n🔗 " +
+        url;
+
+    navigator.clipboard.writeText(finalText).then(() => {
+        alert("Content copied! Paste it into Instagram.");
+    });
 }
 </script>
-
-
 
       {% comment %} <script type="module">
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
-      
+
         // Your web app's Firebase configuration
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
@@ -234,16 +314,14 @@ function sharePost(postContent, siteUrl) {
             appId: "1:624374608791:web:143bdac26d9762dcbb0ad2",
             measurementId: "G-93ZXLVMBCF"
           };
-      
-      
+
         firebase.initializeApp(firebaseConfig);   // Initialize Firebase
         let messaging = firebase.messaging();   // Get Firebase Messaging instance
-      
-        
+
         navigator.serviceWorker.register('/static/serviceworker.js')
         .then(function(register) {
           messaging.useServiceWorker(register);
-      
+
           // Request permission from the user to receive notifications
           messaging.requestPermission()
             .then(function() {
@@ -252,11 +330,11 @@ function sharePost(postContent, siteUrl) {
             })
             .then(function(token){
               console.log(token);
-      
+
               // Send the token to Django to save it in the database
               // Adjust the URL to match your Django endpoint
               let saveTokenUrl = '/save-token/';
-      
+
               // Ensure that the URL is accessible from your web app
               fetch(saveTokenUrl, {
                 method: 'POST',
@@ -288,12 +366,8 @@ function sharePost(postContent, siteUrl) {
         .catch(function(e) {
           console.error("Failed to register the service worker:", e);
         });
-      
+
       </script> {% endcomment %}
 
     </body>
 </html>
-
-
-
-

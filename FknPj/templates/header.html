@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="container-fluid w-100 mx-0 p-0">
-    <header class="navbar flex-md-nowrap p-0 shadow mb-0" data-bs-theme="light" style="background-color: #000157;"> 
+    <header class="navbar flex-md-nowrap p-0 shadow mb-0" data-bs-theme="light" style="background-color: #000157;">
         <a class="navbar-brand fs-6 text-white" href="{% url 'Authentication:home' %}">
             <img src="{% static 'img/fkrnlogo.png' %}" style="width: 105px; height: 60px" alt="Logo">
         </a>
@@ -29,22 +29,21 @@
             </li>
         </ul>
     </header>
-    
+
     {% if  not user.is_authenticated %}
     <div class="alert alert-info alert-dismissible fade show mb-0 rounded-3 shadow-sm" role="alert" style="background-color: #e6f7ff; color: #004085; border-color: #b8daff;">
-       <small>Follow this for the full experience!</small>  
+       <small>Follow this for the full experience!</small>
         <a class="ms-3" href="{% url 'Authentication:login' %}" style="text-decoration: none; color: #0056b3; font-weight: bold;"><small>Login</small></a>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endif %}
-    
-    
+
 </div>
 
 <div class="container-fluid">
     <div class="row">
         <div class="sidebar border-right col-md-3 col-lg-2 p-0 bg-body-tertiary">
-            <div class="offcanvas-lg offcanvas-end d-flex flex-column flex-shrink-0 bg-light justify-content-center rounded-2" id="sidebarMenu" aria-labelledby="sidebarMenuLabel" 
+            <div class="offcanvas-lg offcanvas-end d-flex flex-column flex-shrink-0 bg-light justify-content-center rounded-2" id="sidebarMenu" aria-labelledby="sidebarMenuLabel"
             style="width: 3rem; height: 200px; position: fixed; right: 4px; margin-top: 75px;">
                 <ul class="nav nav-pills nav-flush flex-column text-center">
                     <li>
@@ -55,17 +54,17 @@
 
                     <li>
                         {% if user.is_authenticated %}
-                            
+
                             <a class="nav-link py-3" title="Quotes" href="{% url 'tags:tag_list' %}">
                                 <i class="bi bi-tags-fill pe-none" width="24" height="24" role="img" aria-label="Quotes" style="color: #000157;"></i>
                             </a>
-                            
+
                         {% else %}
                         <a class="nav-link py-3" title="Quotes" href="">
                             <i class="bi bi-tags-fill pe-none" width="24" height="24" role="img" aria-label="Quotes" style="color: #000157;"></i>
                         </a>
                         {% endif %}
-                    
+
                     </li>
 
                     <li>
@@ -78,5 +77,3 @@
         </div>
     </div>
 </div>
-
- 

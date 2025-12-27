@@ -1,6 +1,5 @@
-
-from pathlib import Path
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,12 +9,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-rsucr37x(waygjv&w@+jdp!qlu$$d&d$%@5$gbho$(#u3765)2"
+SECRET_KEY = (
+    "django-insecure-rsucr37x(waygjv&w@+jdp!qlu$$d&d$%@5$gbho$(#u3765)2"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['fkrin.in', 'www.fkrin.in','*']
+ALLOWED_HOSTS = ["fkrin.in", "www.fkrin.in", "*"]
 
 
 # Application definition
@@ -49,7 +50,7 @@ ROOT_URLCONF = "FknPj.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -74,19 +75,18 @@ WSGI_APPLICATION = "FknPj.wsgi.application"
 #         'NAME': 'fkrndb',
 #         'USER': 'postgres',
 #         'PASSWORD': 'FnKi@10$NiFk',
-#         'HOST': 'localhost',  
-#         'PORT': '5432',       
+#         'HOST': 'localhost',
+#         'PORT': '5432',
 #     }
 # }
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 
 # Password validation
@@ -94,20 +94,29 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.UserAttributeSimilarity"
+            "Validator"
+        ),
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.MinimumLengthValidator"
+        ),
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.CommonPasswordValidator"
+        ),
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation.NumericPasswordValidator"
+        ),
     },
 ]
 
-AUTH_USER_MODEL = 'Authentication.CustomUser'
+AUTH_USER_MODEL = "Authentication.CustomUser"
 
 
 # Internationalization
@@ -127,16 +136,12 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = os.path.join(BASE_DIR, "assets")
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
-
-

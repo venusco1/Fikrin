@@ -12,7 +12,6 @@
 
 {% endblock 'style' %}
 
-
 {% block 'content' %}
 
 <section>
@@ -29,12 +28,12 @@
   <div class="profile" style="margin-top: 80px;">
     <a href="{% url 'Authentication:gallery' %}">
       <div class="img">
-        
+
         {% if customuser.profile_pic %}<img src="{{ customuser.profile_pic.url }}"/>
-        {% else %}<img src="{% static 'img/profile_avatar.png' %}"/>{% endif %} 
+        {% else %}<img src="{% static 'img/profile_avatar.png' %}"/>{% endif %}
     </div>
     </a>
-    
+
     <a class="view-more" href="">
 
     </a>
@@ -43,16 +42,12 @@
       <div class="description">Embracing thoughts, sharing quotes. Joining hearts through words on this social journey</div>
       <div class="line"></div>
       <div class="stats">
-        
+
         <a href="{% url 'Authentication:signout' %}" class="text-decoration-none mt-5 text-danger">Sign Out</a>
-        
+
       </div>
     </div>
 
 </section>
 
   {% endblock 'content' %}
-
-
-
-

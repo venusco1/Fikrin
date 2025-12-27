@@ -52,7 +52,7 @@
 <div class="w-full sm:max-w-lg sm:mx-auto px-4" style="margin-bottom: 100px;">
     {% for item in posts %}
     <div class="post">
-        
+
         <article class="overflow-hidden rounded shadow mt-4">
             <div class="sm:flex sm:flex-wrap">
                 <div class="sm:w-100 p-4">
@@ -72,11 +72,11 @@
                 </div>
             </div>
         </article>
-        
+
         <nav id="articleOptions" class="navbar navbar_2 navbar-light bg-light mt-1" style="display: none;">
             <div class="icon-container">
                 <ul class="row mb-2">
-                     
+
                     <li class="col nav-item">
 
                         {% if user in item.likers.all %}
@@ -92,7 +92,7 @@
                             </div>
                         </div>
                     {% else %}
-                    <div class="like" onclick="like_post(this)" data-post_id="{{ item.id }}" data-like_url="{% url 'FknAp:likepost' id=item.id %}">                   
+                    <div class="like" onclick="like_post(this)" data-post_id="{{ item.id }}" data-like_url="{% url 'FknAp:likepost' id=item.id %}">
                         <div style="display: flex;">
                             <div class="svg-span">
                                 <svg class="liked" width="1.1em" height="1.1em" viewBox="0 -1 16 16" class="bi bi-heart" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="color: #000157">
@@ -102,19 +102,18 @@
                             &nbsp;
                             <div class="likes_count">{% if item.likers.count != 0 %}{{item.likers.count}}{% endif %}</div>
                         </div>
-                        </div>    
+                        </div>
 
                     {% endif %}
 
-
-                    </li> 
+                    </li>
                     <li class="col nav-item">
                         {% if user.is_authenticated %}
-                                <a href="{% url 'FknAp:comments' item.id %}" class="nav-link"><i class="bi bi-chat-right me-1"></i>{% if item.comments.count > 0 %}{{ item.comments.count }}{% endif %}</a>
+                                <a href="{% url 'FknAp:comments' item.id %}" class="nav-link"><i class="bi bi-chat-right"></i>{% if item.comments.count > 0 %}{{ item.comments.count }}{% endif %}</a>
                         {% else %}  <a class="nav-link"><i class="bi bi-chat-right me-1"></i>{% if item.comments.count > 0 %}{{ item.comments.count }}{% endif %}</a>
                         {% endif %}
                     </li>
-                    
+
                     {% if request.user.is_authenticated and customuser.username == item.creater.username %}
                     <li class="col nav-item">
                         <a class="nav-link" ><i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#edit_quotes{{ item.id }}" data-bs-placement="right"></i> </a>
@@ -125,33 +124,76 @@
                           </a>
                     </li>
                     {% endif %}
+                    <!--
                     <li class="col nav-item">
                         <a class="nav-link" {% if user.is_authenticated %} onclick="copyContent('{{ item.content_text|escapejs }}');" {% endif %}><i class="bi bi-files scrollLink"></i></a>
-                    </li>
-                    
-                    <!-- Connect the "Report" icon with the report confirmation modal
+                    </li> -->
+
+                    <!-- Connect the "Report" icon with the report confirmation modal -->
                     {% if customuser.username != item.creater.username %}
                     <li class="col nav-item">
                         <a class="nav-link" data-bs-toggle="modal" data-bs-target="#reportConfirmationModal{{ item.id }}">
                             <i class="bi bi-flag text-danger"></i>
                         </a>
                     </li>
-                    {% endif %} -->
+                    {% endif %} 
 
-                        <li class="col nav-item">
-                            <a class="nav-link"
-                            href="javascript:void(0);"
-                            onclick="sharePost(
-                                `{{ item.content|escapejs }}`,
-                                `https://www.fkrin.in`
-                            )">
-                                <i class="bi bi-share-fill text-primary"></i>
+                    <li class="col nav-item me-3">
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#shareModal{{ item.id }}">
+                            <i class="bi bi-share-fill"></i>
+                        </a>
+                    </li>
+
+                    <div class="modal fade" id="shareModal{{ item.id }}" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content rounded-4">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">Share this post</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body text-center">
+
+                            {% with share_text=item.content_text|truncatechars:250 %}
+                            {% with post_url=request.build_absolute_uri %}
+
+                            <!-- WhatsApp -->
+                            <a href="https://wa.me/?text={{ share_text|urlencode }}%0A%0A✨%20Read%20more%20thoughts%20like%20this%20on%20Fikrin%0A🔗%20{{ post_url|urlencode }}"
+                            target="_blank"
+                            class="btn btn-success m-1">
+                                <i class="bi bi-whatsapp"></i> WhatsApp
                             </a>
-                        </li>
+
+                            <!-- Facebook -->
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ post_url|urlencode }}"
+                            target="_blank"
+                            class="btn btn-primary m-1">
+                                <i class="bi bi-facebook"></i> Facebook
+                            </a>
+
+                            <!-- Instagram -->
+                            <a href="https://www.instagram.com/"
+                            target="_blank"
+                            class="btn btn-danger m-1"
+                            onclick="copyInstagramText('{{ share_text|escapejs }}', '{{ post_url }}')">
+                                <i class="bi bi-instagram"></i> Instagram
+                            </a>
+
+                            {% endwith %}
+                            {% endwith %}
+
+                            <p class="small text-muted mt-3">
+                                This content will be copied automatically. Paste it on your social media to share.
+                            </p>
+                        </div>
+
+                        </div>
+                    </div>
+                    </div>
                 </ul>
             </div>
         </nav>
-
 
 <!-- popup for deleting -->
 {% if request.user.is_authenticated and customuser.username == item.creater.username %}
@@ -164,16 +206,15 @@
                     <div class="form-group"><textarea class="form-control p-3" id="postContent" name="edit_text" rows="6" required minlength="50">{{ item.content_text }}</textarea></div>
                     <div class="row px-4 my-2">
                         <p class="col-11 fw-lighter">Capture your thoughts</p>
-                        <button type="submit" class="col-1 btn btn-link p-0" ><i class="fa-solid fa-paper-plane" style="font-size: 20px; color: #000157;"></i></button>    
+                        <button type="submit" class="col-1 btn btn-link p-0" ><i class="fa-solid fa-paper-plane" style="font-size: 20px; color: #000157;"></i></button>
                     </div>
                     </div>
-                </form>                
+                </form>
             </div>
         </div>
     </div>
 </div>
 {% endif %}
-
 
 <!-- alert popup for delete confirm message  -->
 {% if request.user.is_authenticated and customuser.username == item.creater.username %}
@@ -189,10 +230,10 @@
         </div>
       </div>
     </div>
-</div> 
+</div>
 {% endif %}
 
-<!-- alert popup for report confirmation message 
+<!-- alert popup for report confirmation message -->
 {% if request.user.is_authenticated and customuser.username != item.creater.username %}
 <div class="modal fade" id="reportConfirmationModal{{ item.id }}" tabindex="-1" aria-labelledby="reportConfirmationModalLabel{{ item.id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -205,19 +246,18 @@
         </div>
       </div>
     </div>
-</div> 
-{% endif %} -->
+</div>
+{% endif %} 
 
         {% endfor %}
     </div>
 </div>
 
-
 <button class="add-post-button" {% if user.is_authenticated %} data-toggle="modal" {% endif %} data-target="#postModal">
     <a {% if not user.is_authenticated %} href="" {% endif %} class="text-decoration-none text-light"><img src="{% static 'img/write.png' %}" alt=""></a></button>
-    
+
 <!-- Post adding popup Window -->
-{% if request.user.is_authenticated %} 
+{% if request.user.is_authenticated %}
 <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content border-1" style="border-color: #000157;">
@@ -226,8 +266,8 @@
                     {% csrf_token %}
                     <div class="form-group"><textarea class="form-control p-3" id="postContent" name ="content_text" rows="6" required minlength="50"></textarea></div>
                     <div class="row px-4 my-2">
-                        <p class="col-11 fw-lighter"><small>Capture your thoughts</small></p> 
-                        <button type="submit" class="col-1 btn btn-link p-0" ><i class="fa-solid fa-paper-plane" style="font-size: 20px; color: #000157;"></i></button>    
+                        <p class="col-11 fw-lighter"><small>Capture your thoughts</small></p>
+                        <button type="submit" class="col-1 btn btn-link p-0" ><i class="fa-solid fa-paper-plane" style="font-size: 20px; color: #000157;"></i></button>
                     </div>
                     </div>
                 </form>
@@ -244,9 +284,7 @@
 </div>
 {% endif %}
 
-
 <script src="{% static 'js/index_v1.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 {% endblock 'content' %}
-

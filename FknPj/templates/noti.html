@@ -27,7 +27,7 @@
                 </a>
                 {% endif %}
             </li>
-              
+
             <li class="nav-item text-nowrap mx-2">
             </li>
         </ul>
@@ -37,7 +37,7 @@
   <div class="container" style="padding-bottom: 95px; padding-top: 95px;">
     <div class="row">
         {% for notification in notifications %}
-        <div class="col-md-6"> 
+        <div class="col-md-6">
             <a href="{% url 'FknAp:comments' notification.post.id %}#comment_{{ notification.id }}" class="text-decoration-none text-dark">
                 <div class="card mb-2">
                     <div class="card-body">
@@ -50,8 +50,6 @@
         {% endfor %}
     </div>
 </div>
-
-
 
 <!-- Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
@@ -68,7 +66,4 @@
   </div>
 </div>
 
-  
 {% endblock 'content' %}
-
-

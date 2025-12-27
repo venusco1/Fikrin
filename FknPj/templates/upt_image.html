@@ -62,12 +62,12 @@ form {
 <body>
     <section>
         <div class="container-fluid sticky-top text-center px-0 border-bottom">
-            <header class="navbar flex-md-nowrap shadow mb-0 px-3" data-bs-theme="light" 
+            <header class="navbar flex-md-nowrap shadow mb-0 px-3" data-bs-theme="light"
             style="background-color: #000000;">
                 <div class="row align-items-center w-100">
                     <div class="col-auto">
                         <a class="navbar-brand fs-5 text-light align-content-center" href="{% url 'Authentication:profile' %}">
-                            <i class="bi bi-arrow-left-circle text-white"></i> 
+                            <i class="bi bi-arrow-left-circle text-white"></i>
                             <a class="fst-italic fs-6 text-decoration-none text-white"><small>Change Profile Picture</small></a>
                         </a>
                     </div>
@@ -88,7 +88,6 @@ form {
             </header>
         </div>
     </section>
-
 
 <section>
         <div class="container py-5">
@@ -161,7 +160,6 @@ input.addEventListener('change', ()=>{
                     window.location.href = '/profile/'; // Replace '/profile/' with your actual profile page URL
                 },
 
-
                 error: function(error){
                     console.log('error', error)
                     alertBox.innerHTML = `<div class="alert alert-danger text-light" role="alert">
@@ -184,7 +182,6 @@ input.addEventListener('change', ()=>{
         imageArea.style.height = imageHeight + "px";
     }
 </script>
-
 
 </body>
 </html>

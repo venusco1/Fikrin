@@ -28,7 +28,6 @@
     }
 </script>
 
-
 <style>
 
     @charset "UTF-8";
@@ -42,19 +41,19 @@
       background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/432525/geometry2.png);
       font-family: lora;
     }
-    
+
     * {
       box-sizing: border-box;
     }
-    
+
     a {
       text-decoration: none;
     }
-    
+
     li {
       list-style: none;
     }
-    
+
     .main-container {
       width: 100vw;
       height: 100vh;
@@ -62,7 +61,7 @@
       flex-direction: column;
       justify-content: center;
     }
-    
+
     /*
     QOUTES CONTAINER
     */
@@ -74,14 +73,13 @@
       align-items: center;
       border-radius: 2px;
   }
-  
+
   @media screen and (min-width: 768px) {
       .quotes-container {
           width: 60%; /* Adjusted width for larger screens */
       }
   }
-  
-    
+
   .quote {
     width: 100%; /* Set width to 100% for responsiveness */
     max-width: 750px; /* Set maximum width to 750px */
@@ -94,14 +92,14 @@
     opacity: 0.7;
     color: #000157;
   }
-  
+
   /* Media query for smaller screens */
   @media screen and (max-width: 768px) {
     .quote {
         padding: 10px; /* Adjust padding for smaller screens */
     }
   }
-  
+
     .quote::before {
       content: "“";
       font-size: 7em;
@@ -125,7 +123,7 @@
       margin: 0 0 10px 0;
       padding: 20px;
     }
-    
+
     /*
     USER INPUT
     */
@@ -172,7 +170,7 @@
     .user-input textarea:focus {
       outline: none;
     }
-    
+
     .error-animation {
       -webkit-animation-name: blink;
               animation-name: blink;
@@ -185,13 +183,13 @@
       -webkit-animation-direction: alternate;
               animation-direction: alternate;
     }
-    
+
     @-webkit-keyframes blink {
       50% {
         background: rgba(255, 0, 0, 0.8);
       }
     }
-    
+
     @keyframes blink {
       50% {
         background: rgba(255, 0, 0, 0.8);
@@ -200,20 +198,19 @@
     .bg1 {
       background: #F79F24;
     }
-    
+
     .bg2 {
       background: #E20049;
     }
-    
+
     .bg3 {
       background: rgb(193 193 193 / 50%);
   }
-  
-    
+
     .bg4 {
       background: #33425B;
     }
-  
+
   </style>
 
 {% endblock 'style' %}
@@ -221,7 +218,6 @@
 {% block 'content' %}
 
 {% include "header.html" %}
-
 
 </head>
 
@@ -237,7 +233,6 @@
         </div>
     </div>
 </nav>
-
 
 <div class="container px-4">
     <div class="row justify-content-center">
@@ -274,7 +269,3 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 {% endblock 'content' %}
-
-
-
-
