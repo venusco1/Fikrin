@@ -34,7 +34,6 @@
 
 {% include "header.html" %}
 
-
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light sticky-top">
@@ -49,7 +48,6 @@
         </div>
     </div>
 </nav>
-
 
 <div class="w-full sm:max-w-lg sm:mx-auto px-4" style="margin-bottom: 100px;">
     {% for item in posts %}
@@ -121,25 +119,35 @@
                     <li class="col nav-item">
                         <a class="nav-link" ><i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#edit_quotes{{ item.id }}" data-bs-placement="right"></i> </a>
                     </li>
-                 <!--   <li class="col nav-item">
+                    <li class="col nav-item">
                         <a class="nav-link" data-bs-toggle="modal" data-bs-target="#confirmationModal">
                             <i class="bi bi-trash"></i>
                           </a>
-                    </li> -->
+                    </li>
                     {% endif %}
                     <li class="col nav-item">
                         <a class="nav-link" {% if user.is_authenticated %} onclick="copyContent('{{ item.content_text|escapejs }}');" {% endif %}><i class="bi bi-files scrollLink"></i></a>
                     </li>
                     
-                    <!-- Connect the "Report" icon with the report confirmation modal -->
+                    <!-- Connect the "Report" icon with the report confirmation modal
                     {% if customuser.username != item.creater.username %}
                     <li class="col nav-item">
                         <a class="nav-link" data-bs-toggle="modal" data-bs-target="#reportConfirmationModal{{ item.id }}">
                             <i class="bi bi-flag text-danger"></i>
                         </a>
                     </li>
-                    {% endif %}
+                    {% endif %} -->
 
+                        <li class="col nav-item">
+                            <a class="nav-link"
+                            href="javascript:void(0);"
+                            onclick="sharePost(
+                                `{{ item.content|escapejs }}`,
+                                `https://www.fkrin.in`
+                            )">
+                                <i class="bi bi-share-fill text-primary"></i>
+                            </a>
+                        </li>
                 </ul>
             </div>
         </nav>
@@ -184,7 +192,7 @@
 </div> 
 {% endif %}
 
-<!-- alert popup for report confirmation message -->
+<!-- alert popup for report confirmation message 
 {% if request.user.is_authenticated and customuser.username != item.creater.username %}
 <div class="modal fade" id="reportConfirmationModal{{ item.id }}" tabindex="-1" aria-labelledby="reportConfirmationModalLabel{{ item.id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -198,7 +206,7 @@
       </div>
     </div>
 </div> 
-{% endif %}
+{% endif %} -->
 
         {% endfor %}
     </div>

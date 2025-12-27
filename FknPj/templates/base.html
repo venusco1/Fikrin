@@ -27,7 +27,7 @@
         <script>
           // Function to handle notification click action
           function handleNotificationClick() {
-              window.location.href = "https://fikr.in/";
+              window.location.href = "https://fkrin.in/";
           }
         </script>
 
@@ -97,12 +97,134 @@
       </script>
       
       <script type="module">
+  console.log("🟢 STEP 0: Script file loaded");
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging.js";
+
+  console.log("🟢 STEP 1: Firebase modules imported");
+
+  // 🔹 Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyDkyNO4aWT4qVCVJwkcb354_Rtc-TdFybk",
+    authDomain: "fknpj-9c7bb.firebaseapp.com",
+    projectId: "fknpj-9c7bb",
+    storageBucket: "fknpj-9c7bb.appspot.com",
+    messagingSenderId: "624374608791",
+    appId: "1:624374608791:web:143bdac26d9762dcbb0ad2",
+  };
+
+  console.log("🟢 STEP 2: Firebase config ready");
+
+  // 🔹 Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  console.log("🟢 STEP 3: Firebase initialized");
+
+  // 🔹 Register Service Worker
+  let registration;
+  try {
+    registration = await navigator.serviceWorker.register('/static/serviceworker.js');
+    console.log("🟢 STEP 4: Service Worker registered", registration);
+  } catch (swError) {
+    console.error("🔴 STEP 4 FAILED: Service Worker registration error", swError);
+  }
+
+  // 🔹 Initialize Messaging
+  const messaging = getMessaging(app);
+  console.log("🟢 STEP 5: Firebase messaging initialized");
+
+  // 🔹 Request notification permission
+  try {
+    console.log("🟢 STEP 6: Requesting notification permission");
+
+    const permission = await Notification.requestPermission();
+    console.log("🟡 Permission status:", permission);
+
+    if (permission !== "granted") {
+      console.error("🔴 STEP 6 FAILED: Notification permission denied");
+      throw new Error("Notification permission not granted");
+    }
+
+    console.log("🟢 STEP 7: Permission granted");
+
+  } catch (permissionError) {
+    console.error("🔥 Permission error:", permissionError);
+  }
+
+  // 🔹 Get FCM token
+  try {
+    console.log("🟢 STEP 8: Attempting to get FCM token");
+
+    const token = await getToken(messaging, {
+      vapidKey: "BD1y3vyzssdZQmFYYz9KQ_aw97CTJ-4XMyekXoovepWtDNv6z1ph-CN2SO1xcseBXmFxtuUyW14qY1dKPVDtJ4M",
+      serviceWorkerRegistration: registration
+    });
+
+    if (token) {
+      console.log("✅ STEP 9 SUCCESS: FCM TOKEN GENERATED");
+      console.log("🔑 TOKEN:", token);
+
+      // Send the token to Django to save it in the database
+      // Adjust the URL to match your Django endpoint
+      let saveTokenUrl = '/save-token/  ';
+
+      // Ensure that the URL is accessible from your web app
+      fetch(saveTokenUrl, {
+        method: 'POST',
+        // include cookies so Django can see request.user
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          'token': token
+        })
+      })
+      
+    } else {
+      console.warn("⚠️ STEP 9 WARNING: Token is NULL");
+    }
+
+  } catch (tokenError) {
+    console.error("🔥 STEP 8 FAILED: Token generation error", tokenError);
+  }
+
+  console.log("🟢 STEP 10: Script execution finished");
+
+
+</script>
+
+
+
+<script>
+function sharePost(postContent, siteUrl) {
+
+    const shareText = `${postContent}\n\n— via Fikrin`;
+
+    if (navigator.share) {
+        navigator.share({
+            title: "Fikrin Post",
+            text: shareText,
+            url: siteUrl
+        })
+        .catch(err => console.log("Share cancelled"));
+    } else {
+        alert("Sharing not supported on this browser");
+    }
+}
+</script>
+
+
+
+      {% comment %} <script type="module">
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
       
         // Your web app's Firebase configuration
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
         const firebaseConfig = {
             apiKey: "AIzaSyDkyNO4aWT4qVCVJwkcb354_Rtc-TdFybk",
             authDomain: "fknpj-9c7bb.firebaseapp.com",
@@ -138,6 +260,8 @@
               // Ensure that the URL is accessible from your web app
               fetch(saveTokenUrl, {
                 method: 'POST',
+                // include cookies so Django can see request.user
+                credentials: 'same-origin',
                 headers: {
                   'Content-Type': 'application/json',
                   'Accept': 'application/json'
@@ -165,10 +289,8 @@
           console.error("Failed to register the service worker:", e);
         });
       
-      </script>
-      
+      </script> {% endcomment %}
 
-  
     </body>
 </html>
 
